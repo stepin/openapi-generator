@@ -1,0 +1,12 @@
+generatorName: kotlin
+outputDir: samples/client/petstore/kotlin-jvm-spring-3-http-interface
+library: jvm-spring-http-interface
+inputSpec: modules/openapi-generator/src/test/resources/3_0/petstore.yaml
+templateDir: modules/openapi-generator/src/main/resources/kotlin-client
+additionalProperties:
+  artifactId: kotlin-petstore-spring-http-interface
+  serializationLibrary: jackson
+  useSpringBoot3: true
+  useCoroutines: true
+  omitInfrastructureClasses: true
+  enumPropertyNaming: UPPERCASE
