@@ -78,6 +78,7 @@ public class KotlinClientCodegen extends AbstractKotlinCodegen {
     public static final String ROOM_MODEL_PACKAGE = "roomModelPackage";
     public static final String OMIT_GRADLE_PLUGIN_VERSIONS = "omitGradlePluginVersions";
     public static final String OMIT_GRADLE_WRAPPER = "omitGradleWrapper";
+    public static final String OMIT_INFRASTRUCTURE_CLASSES = "omitInfrastructureClasses";
     public static final String USE_SETTINGS_GRADLE = "useSettingsGradle";
     public static final String IDEA = "idea";
     public static final String USE_SPRING_BOOT3 = "useSpringBoot3";
@@ -107,6 +108,7 @@ public class KotlinClientCodegen extends AbstractKotlinCodegen {
     protected boolean generateRoomModels = false;
     @Setter protected String roomModelPackage = "";
     @Setter protected boolean omitGradleWrapper = false;
+    @Setter protected boolean omitInfrastructureClasses = false;
     @Setter protected boolean generateOneOfAnyOfWrappers = true;
 
     protected String authFolder;
@@ -255,6 +257,7 @@ public class KotlinClientCodegen extends AbstractKotlinCodegen {
         cliOptions.add(CliOption.newBoolean(USE_SPRING_BOOT3, "Whether to use the Spring Boot 3 with the jvm-spring-webclient library."));
         cliOptions.add(CliOption.newBoolean(OMIT_GRADLE_PLUGIN_VERSIONS, "Whether to declare Gradle plugin versions in build files."));
         cliOptions.add(CliOption.newBoolean(OMIT_GRADLE_WRAPPER, "Whether to omit Gradle wrapper for creating a sub project."));
+        cliOptions.add(CliOption.newBoolean(OMIT_INFRASTRUCTURE_CLASSES, "Whether to omit infrastructure classes."));
         cliOptions.add(CliOption.newBoolean(USE_SETTINGS_GRADLE, "Whether the project uses settings.gradle."));
         cliOptions.add(CliOption.newBoolean(IDEA, "Add IntellJ Idea plugin and mark Kotlin main and test folders as source folders."));
 
@@ -293,6 +296,10 @@ public class KotlinClientCodegen extends AbstractKotlinCodegen {
 
     public boolean getOmitGradleWrapper() {
         return omitGradleWrapper;
+    }
+
+    public boolean getOmitInfrastructureClasses() {
+        return omitInfrastructureClasses;
     }
 
     public boolean getGenerateOneOfAnyOfWrappers() {
@@ -425,6 +432,10 @@ public class KotlinClientCodegen extends AbstractKotlinCodegen {
 
         if (additionalProperties.containsKey(OMIT_GRADLE_WRAPPER)) {
             setOmitGradleWrapper(Boolean.parseBoolean(additionalProperties.get(OMIT_GRADLE_WRAPPER).toString()));
+        }
+
+        if (additionalProperties.containsKey(OMIT_INFRASTRUCTURE_CLASSES)) {
+            setOmitInfrastructureClasses(Boolean.parseBoolean(additionalProperties.get(OMIT_INFRASTRUCTURE_CLASSES).toString()));
         }
 
         if (additionalProperties.containsKey(CodegenConstants.SERIALIZATION_LIBRARY)) {
@@ -594,9 +605,11 @@ public class KotlinClientCodegen extends AbstractKotlinCodegen {
     private void processJVMRetrofit2Library(String infrastructureFolder) {
         additionalProperties.put(JVM, true);
         additionalProperties.put(JVM_RETROFIT2, true);
-        supportingFiles.add(new SupportingFile("infrastructure/ApiClient.kt.mustache", infrastructureFolder, "ApiClient.kt"));
-        supportingFiles.add(new SupportingFile("infrastructure/ResponseExt.kt.mustache", infrastructureFolder, "ResponseExt.kt"));
-        supportingFiles.add(new SupportingFile("infrastructure/CollectionFormats.kt.mustache", infrastructureFolder, "CollectionFormats.kt"));
+        if (!getOmitInfrastructureClasses()) {
+            supportingFiles.add(new SupportingFile("infrastructure/ApiClient.kt.mustache", infrastructureFolder, "ApiClient.kt"));
+            supportingFiles.add(new SupportingFile("infrastructure/ResponseExt.kt.mustache", infrastructureFolder, "ResponseExt.kt"));
+            supportingFiles.add(new SupportingFile("infrastructure/CollectionFormats.kt.mustache", infrastructureFolder, "CollectionFormats.kt"));
+        }
         addSupportingSerializerAdapters(infrastructureFolder);
     }
 
@@ -610,8 +623,9 @@ public class KotlinClientCodegen extends AbstractKotlinCodegen {
             // Hide this option behind a property getter and setter in case we need to check it elsewhere
             if (getGenerateRoomModels()) {
                 modelTemplateFiles.put("model_room.mustache", "RoomModel.kt");
-                supportingFiles.add(new SupportingFile("infrastructure/ITransformForStorage.mustache", infrastructureFolder, "ITransformForStorage.kt"));
-
+                if (!getOmitInfrastructureClasses()) {
+                    supportingFiles.add(new SupportingFile("infrastructure/ITransformForStorage.mustache", infrastructureFolder, "ITransformForStorage.kt"));
+                }
             }
         } else {
             additionalProperties.put(GENERATE_ROOM_MODELS, generateRoomModels);
@@ -625,13 +639,17 @@ public class KotlinClientCodegen extends AbstractKotlinCodegen {
         }
         additionalProperties.put(ROOM_MODEL_PACKAGE, roomModelPackage);
 
-        supportingFiles.add(new SupportingFile("infrastructure/CollectionFormats.kt.mustache", infrastructureFolder, "CollectionFormats.kt"));
+        if (!getOmitInfrastructureClasses()) {
+            supportingFiles.add(new SupportingFile("infrastructure/CollectionFormats.kt.mustache", infrastructureFolder, "CollectionFormats.kt"));
+        }
 
         // We have auth related partial files, so they can be overridden, but don't generate them explicitly
         supportingFiles.add(new SupportingFile("request/GsonRequest.mustache", requestFolder, "GsonRequest.kt"));
         supportingFiles.add(new SupportingFile("request/IRequestFactory.mustache", requestFolder, "IRequestFactory.kt"));
         supportingFiles.add(new SupportingFile("request/RequestFactory.mustache", requestFolder, "RequestFactory.kt"));
-        supportingFiles.add(new SupportingFile("infrastructure/CollectionFormats.kt.mustache", infrastructureFolder, "CollectionFormats.kt"));
+        if (!getOmitInfrastructureClasses()) {
+            supportingFiles.add(new SupportingFile("infrastructure/CollectionFormats.kt.mustache", infrastructureFolder, "CollectionFormats.kt"));
+        }
 
         if (getSerializationLibrary() != SERIALIZATION_LIBRARY_TYPE.gson) {
             throw new RuntimeException("This library currently only supports gson serialization. Try adding '--additional-properties serializationLibrary=gson' to your command.");
@@ -642,6 +660,9 @@ public class KotlinClientCodegen extends AbstractKotlinCodegen {
     }
 
     private void addSupportingSerializerAdapters(final String infrastructureFolder) {
+        if (getOmitInfrastructureClasses()) {
+            return;
+        }
         supportingFiles.add(new SupportingFile("jvm-common/infrastructure/Serializer.kt.mustache", infrastructureFolder, "Serializer.kt"));
 
         switch (getSerializationLibrary()) {
@@ -691,7 +712,9 @@ public class KotlinClientCodegen extends AbstractKotlinCodegen {
 
     private void addKotlinxDateTimeInstantAdapter(final String infrastructureFolder) {
         if (DateLibrary.KOTLINX_DATETIME.value.equals(dateLibrary)) {
-            supportingFiles.add(new SupportingFile("jvm-common/infrastructure/InstantAdapter.kt.mustache", infrastructureFolder, "InstantAdapter.kt"));
+            if (!getOmitInfrastructureClasses()) {
+                supportingFiles.add(new SupportingFile("jvm-common/infrastructure/InstantAdapter.kt.mustache", infrastructureFolder, "InstantAdapter.kt"));
+            }
         }
     }
 
@@ -708,11 +731,13 @@ public class KotlinClientCodegen extends AbstractKotlinCodegen {
 
         importMapping.put("InputProvider", "io.ktor.client.request.forms.InputProvider");
 
-        supportingFiles.add(new SupportingFile("infrastructure/ApiAbstractions.kt.mustache", infrastructureFolder, "ApiAbstractions.kt"));
-        supportingFiles.add(new SupportingFile("infrastructure/ApiClient.kt.mustache", infrastructureFolder, "ApiClient.kt"));
-        supportingFiles.add(new SupportingFile("infrastructure/HttpResponse.kt.mustache", infrastructureFolder, "HttpResponse.kt"));
-        supportingFiles.add(new SupportingFile("infrastructure/RequestConfig.kt.mustache", infrastructureFolder, "RequestConfig.kt"));
-        supportingFiles.add(new SupportingFile("infrastructure/RequestMethod.kt.mustache", infrastructureFolder, "RequestMethod.kt"));
+        if (!getOmitInfrastructureClasses()) {
+            supportingFiles.add(new SupportingFile("infrastructure/ApiAbstractions.kt.mustache", infrastructureFolder, "ApiAbstractions.kt"));
+            supportingFiles.add(new SupportingFile("infrastructure/ApiClient.kt.mustache", infrastructureFolder, "ApiClient.kt"));
+            supportingFiles.add(new SupportingFile("infrastructure/HttpResponse.kt.mustache", infrastructureFolder, "HttpResponse.kt"));
+            supportingFiles.add(new SupportingFile("infrastructure/RequestConfig.kt.mustache", infrastructureFolder, "RequestConfig.kt"));
+            supportingFiles.add(new SupportingFile("infrastructure/RequestMethod.kt.mustache", infrastructureFolder, "RequestMethod.kt"));
+        }
 
         supportingFiles.add(new SupportingFile("auth/ApiKeyAuth.kt.mustache", authFolder, "ApiKeyAuth.kt"));
         supportingFiles.add(new SupportingFile("auth/Authentication.kt.mustache", authFolder, "Authentication.kt"));
@@ -727,10 +752,12 @@ public class KotlinClientCodegen extends AbstractKotlinCodegen {
      * @param infrastructureFolder infrastructure destination folder
      */
     private void processJVMVertXLibrary(final String infrastructureFolder) {
-        supportingFiles.add(new SupportingFile("infrastructure/ApiAbstractions.kt.mustache", infrastructureFolder, "ApiAbstractions.kt"));
-        supportingFiles.add(new SupportingFile("infrastructure/ApiClient.kt.mustache", infrastructureFolder, "ApiClient.kt"));
-        supportingFiles.add(new SupportingFile("infrastructure/Errors.kt.mustache", infrastructureFolder, "Errors.kt"));
-        supportingFiles.add(new SupportingFile("infrastructure/ApiResponse.kt.mustache", infrastructureFolder, "ApiResponse.kt"));
+        if (!getOmitInfrastructureClasses()) {
+            supportingFiles.add(new SupportingFile("infrastructure/ApiAbstractions.kt.mustache", infrastructureFolder, "ApiAbstractions.kt"));
+            supportingFiles.add(new SupportingFile("infrastructure/ApiClient.kt.mustache", infrastructureFolder, "ApiClient.kt"));
+            supportingFiles.add(new SupportingFile("infrastructure/Errors.kt.mustache", infrastructureFolder, "Errors.kt"));
+            supportingFiles.add(new SupportingFile("infrastructure/ApiResponse.kt.mustache", infrastructureFolder, "ApiResponse.kt"));
+        }
         addSupportingSerializerAdapters(infrastructureFolder);
 
         additionalProperties.put(JVM, true);
@@ -752,9 +779,11 @@ public class KotlinClientCodegen extends AbstractKotlinCodegen {
         setLibrary(JVM_OKHTTP);
 
         // jvm specific supporting files
-        supportingFiles.add(new SupportingFile("infrastructure/Errors.kt.mustache", infrastructureFolder, "Errors.kt"));
-        supportingFiles.add(new SupportingFile("infrastructure/ResponseExtensions.kt.mustache", infrastructureFolder, "ResponseExtensions.kt"));
-        supportingFiles.add(new SupportingFile("infrastructure/ApiResponse.kt.mustache", infrastructureFolder, "ApiResponse.kt"));
+        if (!getOmitInfrastructureClasses()) {
+            supportingFiles.add(new SupportingFile("infrastructure/Errors.kt.mustache", infrastructureFolder, "Errors.kt"));
+            supportingFiles.add(new SupportingFile("infrastructure/ResponseExtensions.kt.mustache", infrastructureFolder, "ResponseExtensions.kt"));
+            supportingFiles.add(new SupportingFile("infrastructure/ApiResponse.kt.mustache", infrastructureFolder, "ApiResponse.kt"));
+        }
     }
 
     private void proccessJvmSpring(final String infrastructureFolder) {
@@ -819,10 +848,12 @@ public class KotlinClientCodegen extends AbstractKotlinCodegen {
         importMapping.put("OctetByteArray", packageName + ".infrastructure.OctetByteArray");
 
         // multiplatform specific supporting files
-        supportingFiles.add(new SupportingFile("infrastructure/Base64ByteArray.kt.mustache", infrastructureFolder, "Base64ByteArray.kt"));
-        supportingFiles.add(new SupportingFile("infrastructure/Bytes.kt.mustache", infrastructureFolder, "Bytes.kt"));
-        supportingFiles.add(new SupportingFile("infrastructure/HttpResponse.kt.mustache", infrastructureFolder, "HttpResponse.kt"));
-        supportingFiles.add(new SupportingFile("infrastructure/OctetByteArray.kt.mustache", infrastructureFolder, "OctetByteArray.kt"));
+        if (!getOmitInfrastructureClasses()) {
+            supportingFiles.add(new SupportingFile("infrastructure/Base64ByteArray.kt.mustache", infrastructureFolder, "Base64ByteArray.kt"));
+            supportingFiles.add(new SupportingFile("infrastructure/Bytes.kt.mustache", infrastructureFolder, "Bytes.kt"));
+            supportingFiles.add(new SupportingFile("infrastructure/HttpResponse.kt.mustache", infrastructureFolder, "HttpResponse.kt"));
+            supportingFiles.add(new SupportingFile("infrastructure/OctetByteArray.kt.mustache", infrastructureFolder, "OctetByteArray.kt"));
+        }
 
         // multiplatform specific auth
         supportingFiles.add(new SupportingFile("auth/ApiKeyAuth.kt.mustache", authFolder, "ApiKeyAuth.kt"));
@@ -840,6 +871,9 @@ public class KotlinClientCodegen extends AbstractKotlinCodegen {
 
 
     private void commonJvmMultiplatformSupportingFiles(String infrastructureFolder) {
+        if (getOmitInfrastructureClasses()) {
+            return;
+        }
         supportingFiles.add(new SupportingFile("infrastructure/ApiClient.kt.mustache", infrastructureFolder, "ApiClient.kt"));
         supportingFiles.add(new SupportingFile("infrastructure/ApiAbstractions.kt.mustache", infrastructureFolder, "ApiAbstractions.kt"));
         supportingFiles.add(new SupportingFile("infrastructure/PartConfig.kt.mustache", infrastructureFolder, "PartConfig.kt"));
