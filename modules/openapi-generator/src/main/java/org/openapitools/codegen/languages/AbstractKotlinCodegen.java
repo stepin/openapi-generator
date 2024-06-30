@@ -93,23 +93,23 @@ public abstract class AbstractKotlinCodegen extends DefaultCodegen implements Co
         setSortModelPropertiesByRequiredFlag(true);
 
         languageSpecificPrimitives = new HashSet<>(Arrays.asList(
-                "kotlin.Byte",
-                "kotlin.ByteArray",
-                "kotlin.Short",
-                "kotlin.Int",
-                "kotlin.Long",
-                "kotlin.Float",
-                "kotlin.Double",
-                "kotlin.Boolean",
-                "kotlin.Char",
-                "kotlin.String",
-                "kotlin.Array",
-                "kotlin.collections.List",
-                "kotlin.collections.MutableList",
-                "kotlin.collections.Map",
-                "kotlin.collections.MutableMap",
-                "kotlin.collections.Set",
-                "kotlin.collections.MutableSet"
+                "Byte",
+                "ByteArray",
+                "Short",
+                "Int",
+                "Long",
+                "Float",
+                "Double",
+                "Boolean",
+                "Char",
+                "String",
+                "Array",
+                "List",
+                "MutableList",
+                "Map",
+                "MutableMap",
+                "Set",
+                "MutableSet"
         ));
 
         // this includes hard reserved words defined by https://github.com/JetBrains/kotlin/blob/master/core/descriptors/src/org/jetbrains/kotlin/renderer/KeywordStringsGenerated.java
@@ -191,50 +191,50 @@ public abstract class AbstractKotlinCodegen extends DefaultCodegen implements Co
         ));
 
         defaultIncludes = new HashSet<>(Arrays.asList(
-                "kotlin.Byte",
-                "kotlin.ByteArray",
-                "kotlin.Short",
-                "kotlin.Int",
-                "kotlin.Long",
-                "kotlin.Float",
-                "kotlin.Double",
-                "kotlin.Boolean",
-                "kotlin.Char",
-                "kotlin.Array",
-                "kotlin.collections.List",
-                "kotlin.collections.MutableList",
-                "kotlin.collections.Set",
-                "kotlin.collections.MutableSet",
-                "kotlin.collections.Map",
-                "kotlin.collections.MutableMap"
+                "Byte",
+                "ByteArray",
+                "Short",
+                "Int",
+                "Long",
+                "Float",
+                "Double",
+                "Boolean",
+                "Char",
+                "Array",
+                "List",
+                "MutableList",
+                "Set",
+                "MutableSet",
+                "Map",
+                "MutableMap"
         ));
 
         typeMapping = new HashMap<>();
-        typeMapping.put("string", "kotlin.String");
-        typeMapping.put("boolean", "kotlin.Boolean");
-        typeMapping.put("integer", "kotlin.Int");
-        typeMapping.put("float", "kotlin.Float");
-        typeMapping.put("long", "kotlin.Long");
-        typeMapping.put("double", "kotlin.Double");
-        typeMapping.put("ByteArray", "kotlin.ByteArray");
+        typeMapping.put("string", "String");
+        typeMapping.put("boolean", "Boolean");
+        typeMapping.put("integer", "Int");
+        typeMapping.put("float", "Float");
+        typeMapping.put("long", "Long");
+        typeMapping.put("double", "Double");
+        typeMapping.put("ByteArray", "ByteArray");
         typeMapping.put("number", "java.math.BigDecimal");
         typeMapping.put("decimal", "java.math.BigDecimal");
         typeMapping.put("date-time", "java.time.OffsetDateTime");
         typeMapping.put("date", "java.time.LocalDate");
         typeMapping.put("file", "java.io.File");
-        typeMapping.put("array", "kotlin.Array");
-        typeMapping.put("list", "kotlin.collections.List");
-        typeMapping.put("set", "kotlin.collections.Set");
-        typeMapping.put("map", "kotlin.collections.Map");
-        typeMapping.put("object", "kotlin.Any");
-        typeMapping.put("binary", "kotlin.ByteArray");
+        typeMapping.put("array", "Array");
+        typeMapping.put("list", "List");
+        typeMapping.put("set", "Set");
+        typeMapping.put("map", "Map");
+        typeMapping.put("object", "Any");
+        typeMapping.put("binary", "ByteArray");
         typeMapping.put("Date", "java.time.LocalDate");
         typeMapping.put("DateTime", "java.time.OffsetDateTime");
-        typeMapping.put("AnyType", "kotlin.Any");
+        typeMapping.put("AnyType", "Any");
 
-        instantiationTypes.put("array", "kotlin.collections.ArrayList");
-        instantiationTypes.put("list", "kotlin.collections.ArrayList");
-        instantiationTypes.put("map", "kotlin.collections.HashMap");
+        instantiationTypes.put("array", "ArrayList");
+        instantiationTypes.put("list", "ArrayList");
+        instantiationTypes.put("map", "HashMap");
 
         importMapping = new HashMap<>();
         importMapping.put("BigDecimal", "java.math.BigDecimal");
@@ -335,7 +335,7 @@ public abstract class AbstractKotlinCodegen extends DefaultCodegen implements Co
     public String getSchemaType(Schema p) {
         String openAPIType = super.getSchemaType(p);
         String type;
-        // This maps, for example, long -> kotlin.Long based on hashes in this type's constructor
+        // This maps, for example, long -> Long based on hashes in this type's constructor
         if (typeMapping.containsKey(openAPIType)) {
             type = typeMapping.get(openAPIType);
             if (languageSpecificPrimitives.contains(type)) {
@@ -369,7 +369,7 @@ public abstract class AbstractKotlinCodegen extends DefaultCodegen implements Co
                 inner = new StringSchema().description("TODO default missing map inner type to string");
                 p.setAdditionalProperties(inner);
             }
-            return getSchemaType(target) + "<kotlin.String, " + getTypeDeclaration(inner) + ">";
+            return getSchemaType(target) + "<String, " + getTypeDeclaration(inner) + ">";
         }
         return super.getTypeDeclaration(target);
     }
@@ -515,9 +515,9 @@ public abstract class AbstractKotlinCodegen extends DefaultCodegen implements Co
         additionalProperties.put("modelDocPath", modelDocPath);
 
         if (isModelMutable()) {
-            typeMapping.put("list", "kotlin.collections.MutableList");
-            typeMapping.put("set", "kotlin.collections.MutableSet");
-            typeMapping.put("map", "kotlin.collections.MutableMap");
+            typeMapping.put("list", "MutableList");
+            typeMapping.put("set", "MutableSet");
+            typeMapping.put("map", "MutableMap");
         }
 
         if (additionalProperties.containsKey(USE_JAKARTA_EE)) {
@@ -850,15 +850,15 @@ public abstract class AbstractKotlinCodegen extends DefaultCodegen implements Co
 
     @Override
     public String toEnumValue(String value, String datatype) {
-        if ("kotlin.Int".equals(datatype) || "kotlin.Long".equals(datatype)) {
+        if ("Int".equals(datatype) || "Long".equals(datatype)) {
             return value;
-        } else if ("kotlin.Double".equals(datatype)) {
+        } else if ("Double".equals(datatype)) {
             if (value.contains(".")) {
                 return value;
             } else {
                 return value + ".0"; // Float and double must have .0
             }
-        } else if ("kotlin.Float".equals(datatype)) {
+        } else if ("Float".equals(datatype)) {
             return value + "f";
         } else {
             return "\"" + value + "\"";
@@ -1140,28 +1140,28 @@ public abstract class AbstractKotlinCodegen extends DefaultCodegen implements Co
     protected void doDataTypeAssignment(final String returnType, DataTypeAssigner dataTypeAssigner) {
         if (returnType == null) {
             dataTypeAssigner.setReturnType("Unit");
-        } else if (returnType.startsWith("kotlin.collections.List")) {
+        } else if (returnType.startsWith("List")) {
             int end = returnType.lastIndexOf(">");
             if (end > 0) {
-                dataTypeAssigner.setReturnType(returnType.substring("kotlin.collections.List<".length(), end).trim());
+                dataTypeAssigner.setReturnType(returnType.substring("List<".length(), end).trim());
                 dataTypeAssigner.setReturnContainer("List");
             }
-        } else if (returnType.startsWith("kotlin.collections.MutableList")) {
+        } else if (returnType.startsWith("MutableList")) {
             int end = returnType.lastIndexOf(">");
             if (end > 0) {
-                dataTypeAssigner.setReturnType(returnType.substring("kotlin.collections.MutableList<".length(), end).trim());
+                dataTypeAssigner.setReturnType(returnType.substring("MutableList<".length(), end).trim());
                 dataTypeAssigner.setReturnContainer("List");
             }
-        } else if (returnType.startsWith("kotlin.collections.Map")) {
+        } else if (returnType.startsWith("Map")) {
             int end = returnType.lastIndexOf(">");
             if (end > 0) {
-                dataTypeAssigner.setReturnType(returnType.substring("kotlin.collections.Map<".length(), end).split(",")[1].trim());
+                dataTypeAssigner.setReturnType(returnType.substring("Map<".length(), end).split(",")[1].trim());
                 dataTypeAssigner.setReturnContainer("Map");
             }
-        } else if (returnType.startsWith("kotlin.collections.MutableMap")) {
+        } else if (returnType.startsWith("MutableMap")) {
             int end = returnType.lastIndexOf(">");
             if (end > 0) {
-                dataTypeAssigner.setReturnType(returnType.substring("kotlin.collections.MutableMap<".length(), end).split(",")[1].trim());
+                dataTypeAssigner.setReturnType(returnType.substring("MutableMap<".length(), end).split(",")[1].trim());
                 dataTypeAssigner.setReturnContainer("Map");
             }
         }
