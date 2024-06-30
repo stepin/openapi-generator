@@ -17,6 +17,11 @@ RUN mvn -B -am -pl "modules/openapi-generator-cli" package
 ## and ca-certificates (to be able to query HTTPS hosted specs)
 FROM eclipse-temurin:17-jre
 
+RUN curl -sSLO https://github.com/pinterest/ktlint/releases/download/1.3.0/ktlint && \
+    chmod a+x ktlint && \
+    mv ktlint /usr/local/bin/
+ENV KOTLIN_POST_PROCESS_FILE "/usr/local/bin/ktlint -F"
+
 ENV GEN_DIR /opt/openapi-generator
 
 RUN mkdir -p ${GEN_DIR}/modules/openapi-generator-cli/target
