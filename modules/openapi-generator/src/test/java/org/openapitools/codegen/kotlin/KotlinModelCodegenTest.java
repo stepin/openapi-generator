@@ -89,12 +89,12 @@ public class KotlinModelCodegenTest {
 
         assertFileContains(Paths.get(outputPath + "/src/main/kotlin/models/NonUniqueArray.kt"),
                 codegen instanceof KotlinVertxServerCodegen
-                        ? "val array: kotlin.Array<kotlin.String>"
-                        : "val array: kotlin.collections.List<kotlin.String>"
+                        ? "val array: Array<String>"
+                        : "val array: List<String>"
         );
 
         assertFileContains(Paths.get(outputPath + "/src/main/kotlin/models/UniqueArray.kt"),
-                "val array: kotlin.collections.Set<kotlin.String>");
+                "val array: Set<String>");
     }
 
     @Test(dataProvider = "generators")
@@ -103,11 +103,11 @@ public class KotlinModelCodegenTest {
 
         assertFileContains(Paths.get(outputPath + "/src/main/kotlin/models/NonUniqueArray.kt"),
                 codegen instanceof KotlinVertxServerCodegen
-                        ? "var array: kotlin.Array<kotlin.String>"
-                        : "var array: kotlin.collections.MutableList<kotlin.String>"
+                        ? "var array: Array<String>"
+                        : "var array: MutableList<String>"
         );
 
         assertFileContains(Paths.get(outputPath + "/src/main/kotlin/models/UniqueArray.kt"),
-                "var array: kotlin.collections.MutableSet<kotlin.String>");
+                "var array: MutableSet<String>");
     }
 }

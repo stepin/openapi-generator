@@ -38,7 +38,7 @@ import kotlinx.serialization.encoding.*
      * enum for parameter {{paramName}}
      */
     @Serializable
-    {{#nonPublicApi}}internal {{/nonPublicApi}}enum class {{enumName}}{{operationIdCamelCase}}(val value: {{^isContainer}}{{dataType}}{{/isContainer}}{{#isContainer}}kotlin.String{{/isContainer}}) {
+    {{#nonPublicApi}}internal {{/nonPublicApi}}enum class {{enumName}}{{operationIdCamelCase}}(val value: {{^isContainer}}{{dataType}}{{/isContainer}}{{#isContainer}}String{{/isContainer}}) {
     {{^enumUnknownDefaultCase}}
         {{#allowableValues}}{{#enumVars}}
         @SerialName(value = {{^isString}}"{{/isString}}{{{value}}}{{^isString}}"{{/isString}})
@@ -64,7 +64,7 @@ import kotlinx.serialization.encoding.*
     {{#returnType}}
     @Suppress("UNCHECKED_CAST")
     {{/returnType}}
-    open suspend fun {{operationId}}({{#allParams}}{{{paramName}}}: {{#isEnum}}{{#isContainer}}kotlin.collections.List<{{enumName}}{{operationIdCamelCase}}>{{/isContainer}}{{^isContainer}}{{enumName}}{{operationIdCamelCase}}{{/isContainer}}{{/isEnum}}{{^isEnum}}{{{dataType}}}{{/isEnum}}{{#required}}{{#defaultValue}} = {{^isNumber}}{{#isEnum}}{{enumName}}{{operationIdCamelCase}}.{{enumDefaultValue}}{{/isEnum}}{{^isEnum}}{{{defaultValue}}}{{/isEnum}}{{/isNumber}}{{#isNumber}}{{{defaultValue}}}.toDouble(){{/isNumber}}{{/defaultValue}}{{/required}}{{^required}}?{{#defaultValue}} = {{^isNumber}}{{#isEnum}}{{enumName}}{{operationIdCamelCase}}.{{enumDefaultValue}}{{/isEnum}}{{^isEnum}}{{{defaultValue}}}{{/isEnum}}{{/isNumber}}{{#isNumber}}{{{defaultValue}}}.toDouble(){{/isNumber}}{{/defaultValue}}{{^defaultValue}} = null{{/defaultValue}}{{/required}}{{^-last}}, {{/-last}}{{/allParams}}): HttpResponse<{{{returnType}}}{{^returnType}}Unit{{/returnType}}> {
+    open suspend fun {{operationId}}({{#allParams}}{{{paramName}}}: {{#isEnum}}{{#isContainer}}List<{{enumName}}{{operationIdCamelCase}}>{{/isContainer}}{{^isContainer}}{{enumName}}{{operationIdCamelCase}}{{/isContainer}}{{/isEnum}}{{^isEnum}}{{{dataType}}}{{/isEnum}}{{#required}}{{#defaultValue}} = {{^isNumber}}{{#isEnum}}{{enumName}}{{operationIdCamelCase}}.{{enumDefaultValue}}{{/isEnum}}{{^isEnum}}{{{defaultValue}}}{{/isEnum}}{{/isNumber}}{{#isNumber}}{{{defaultValue}}}.toDouble(){{/isNumber}}{{/defaultValue}}{{/required}}{{^required}}?{{#defaultValue}} = {{^isNumber}}{{#isEnum}}{{enumName}}{{operationIdCamelCase}}.{{enumDefaultValue}}{{/isEnum}}{{^isEnum}}{{{defaultValue}}}{{/isEnum}}{{/isNumber}}{{#isNumber}}{{{defaultValue}}}.toDouble(){{/isNumber}}{{/defaultValue}}{{^defaultValue}} = null{{/defaultValue}}{{/required}}{{^-last}}, {{/-last}}{{/allParams}}): HttpResponse<{{{returnType}}}{{^returnType}}Unit{{/returnType}}> {
 
         val localVariableAuthNames = listOf<String>({{#authMethods}}"{{name}}"{{^-last}}, {{/-last}}{{/authMethods}})
 
@@ -103,7 +103,7 @@ import kotlinx.serialization.encoding.*
         val localVariableHeaders = mutableMapOf<String, String>(){{#headerParams}}
         {{{paramName}}}?.apply { localVariableHeaders["{{baseName}}"] = {{#isContainer}}this.joinToString(separator = collectionDelimiter("{{collectionFormat}}")){{/isContainer}}{{^isContainer}}this.toString(){{/isContainer}} }{{/headerParams}}
 
-        val localVariableConfig = RequestConfig<kotlin.Any?>(
+        val localVariableConfig = RequestConfig<Any?>(
             RequestMethod.{{httpMethod}},
             "{{path}}"{{#pathParams}}.replace("{" + "{{baseName}}" + "}", {{#isContainer}}{{paramName}}.joinToString(","){{/isContainer}}{{^isContainer}}{{^isEnum}}"${{{paramName}}}"{{/isEnum}}{{#isEnum}}"${ {{paramName}}.value }"{{/isEnum}}{{/isContainer}}){{/pathParams}},
             query = localVariableQuery,

@@ -74,18 +74,18 @@ import kotlinx.serialization.*
      * This solves a problem when the variable name and its value are different, and ensures that
      * the client sends the correct enum values to the server always.
      */
-    override fun toString(): kotlin.String = value{{^isString}}.toString(){{/isString}}
+    override fun toString(): String = value{{^isString}}.toString(){{/isString}}
 
     companion object {
         /**
          * Converts the provided [data] to a [String] on success, null otherwise.
          */
-        fun encode(data: kotlin.Any?): kotlin.String? = if (data is {{classname}}) "$data" else null
+        fun encode(data: Any?): String? = if (data is {{classname}}) "$data" else null
 
         /**
          * Returns a valid [{{classname}}] for [data], null otherwise.
          */
-        fun decode(data: kotlin.Any?): {{classname}}? = data?.let {
+        fun decode(data: Any?): {{classname}}? = data?.let {
           val normalizedData = "$it".lowercase()
           values().firstOrNull { value ->
             it == value || normalizedData == "$value".lowercase()

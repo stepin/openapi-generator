@@ -36,7 +36,7 @@ import {{packageName}}.infrastructure.*
     /**
      * enum for parameter {{paramName}}
      */
-    {{#nonPublicApi}}internal {{/nonPublicApi}}enum class {{enumName}}{{operationIdCamelCase}}(val value: {{^isContainer}}{{dataType}}{{/isContainer}}{{#isContainer}}kotlin.String{{/isContainer}}) {
+    {{#nonPublicApi}}internal {{/nonPublicApi}}enum class {{enumName}}{{operationIdCamelCase}}(val value: {{^isContainer}}{{dataType}}{{/isContainer}}{{#isContainer}}String{{/isContainer}}) {
     {{^enumUnknownDefaultCase}}
     {{#allowableValues}}
     {{#enumVars}}
@@ -66,7 +66,7 @@ import {{packageName}}.infrastructure.*
     {{#isDeprecated}}
     @Deprecated(message = "This operation is deprecated.")
     {{/isDeprecated}}
-    fun {{operationId}}({{#allParams}}{{{paramName}}}: {{#isEnum}}{{#isContainer}}kotlin.collections.List<{{enumName}}{{operationIdCamelCase}}>{{/isContainer}}{{^isContainer}}{{enumName}}{{operationIdCamelCase}}{{/isContainer}}{{/isEnum}}{{^isEnum}}{{{dataType}}}{{/isEnum}}{{^required}}?{{#defaultValue}} = {{>param_default_value}}{{/defaultValue}}{{^defaultValue}} = null{{/defaultValue}}{{/required}}{{^-last}}, {{/-last}}{{/allParams}}): {{#returnType}}{{{returnType}}}{{#nullableReturnType}}?{{/nullableReturnType}}{{/returnType}}{{^returnType}}Unit{{/returnType}} {
+    fun {{operationId}}({{#allParams}}{{{paramName}}}: {{#isEnum}}{{#isContainer}}List<{{enumName}}{{operationIdCamelCase}}>{{/isContainer}}{{^isContainer}}{{enumName}}{{operationIdCamelCase}}{{/isContainer}}{{/isEnum}}{{^isEnum}}{{{dataType}}}{{/isEnum}}{{^required}}?{{#defaultValue}} = {{>param_default_value}}{{/defaultValue}}{{^defaultValue}} = null{{/defaultValue}}{{/required}}{{^-last}}, {{/-last}}{{/allParams}}): {{#returnType}}{{{returnType}}}{{#nullableReturnType}}?{{/nullableReturnType}}{{/returnType}}{{^returnType}}Unit{{/returnType}} {
         {{#returnType}}val result = {{/returnType}}{{operationId}}WithHttpInfo({{#allParams}}{{{paramName}}} = {{{paramName}}}{{^-last}}, {{/-last}}{{/allParams}})
         {{#returnType}}
         return result.body!!
@@ -77,7 +77,7 @@ import {{packageName}}.infrastructure.*
     {{#isDeprecated}}
     @Deprecated(message = "This operation is deprecated.")
     {{/isDeprecated}}
-    fun {{operationId}}WithHttpInfo({{#allParams}}{{{paramName}}}: {{#isEnum}}{{#isContainer}}kotlin.collections.List<{{enumName}}{{operationIdCamelCase}}>{{/isContainer}}{{^isContainer}}{{enumName}}{{operationIdCamelCase}}{{/isContainer}}{{/isEnum}}{{^isEnum}}{{{dataType}}}{{/isEnum}}{{^required}}?{{#defaultValue}} = {{>param_default_value}}{{/defaultValue}}{{^defaultValue}} = null{{/defaultValue}}{{/required}}{{^-last}}, {{/-last}}{{/allParams}}): ResponseEntity<{{#returnType}}{{{returnType}}}{{#nullableReturnType}}?{{/nullableReturnType}}{{/returnType}}{{^returnType}}Unit{{/returnType}}> {
+    fun {{operationId}}WithHttpInfo({{#allParams}}{{{paramName}}}: {{#isEnum}}{{#isContainer}}List<{{enumName}}{{operationIdCamelCase}}>{{/isContainer}}{{^isContainer}}{{enumName}}{{operationIdCamelCase}}{{/isContainer}}{{/isEnum}}{{^isEnum}}{{{dataType}}}{{/isEnum}}{{^required}}?{{#defaultValue}} = {{>param_default_value}}{{/defaultValue}}{{^defaultValue}} = null{{/defaultValue}}{{/required}}{{^-last}}, {{/-last}}{{/allParams}}): ResponseEntity<{{#returnType}}{{{returnType}}}{{#nullableReturnType}}?{{/nullableReturnType}}{{/returnType}}{{^returnType}}Unit{{/returnType}}> {
         val localVariableConfig = {{operationId}}RequestConfig({{#allParams}}{{{paramName}}} = {{{paramName}}}{{^-last}}, {{/-last}}{{/allParams}})
         return request<{{#hasBodyParam}}{{#bodyParams}}{{{dataType}}}{{/bodyParams}}{{/hasBodyParam}}{{^hasBodyParam}}{{^hasFormParams}}Unit{{/hasFormParams}}{{#hasFormParams}}Map<String, PartConfig<*>>{{/hasFormParams}}{{/hasBodyParam}}, {{{returnType}}}{{^returnType}}Unit{{/returnType}}>(
             localVariableConfig
@@ -87,7 +87,7 @@ import {{packageName}}.infrastructure.*
     {{#isDeprecated}}
     @Deprecated(message = "This operation is deprecated.")
     {{/isDeprecated}}
-    fun {{operationId}}RequestConfig({{#allParams}}{{{paramName}}}: {{#isEnum}}{{#isContainer}}kotlin.collections.List<{{enumName}}{{operationIdCamelCase}}>{{/isContainer}}{{^isContainer}}{{enumName}}{{operationIdCamelCase}}{{/isContainer}}{{/isEnum}}{{^isEnum}}{{{dataType}}}{{/isEnum}}{{^required}}?{{#defaultValue}} = {{>param_default_value}}{{/defaultValue}}{{^defaultValue}} = null{{/defaultValue}}{{/required}}{{^-last}}, {{/-last}}{{/allParams}}) : RequestConfig<{{#hasBodyParam}}{{#bodyParams}}{{{dataType}}}{{/bodyParams}}{{/hasBodyParam}}{{^hasBodyParam}}{{^hasFormParams}}Unit{{/hasFormParams}}{{#hasFormParams}}Map<String, PartConfig<*>>{{/hasFormParams}}{{/hasBodyParam}}> {
+    fun {{operationId}}RequestConfig({{#allParams}}{{{paramName}}}: {{#isEnum}}{{#isContainer}}List<{{enumName}}{{operationIdCamelCase}}>{{/isContainer}}{{^isContainer}}{{enumName}}{{operationIdCamelCase}}{{/isContainer}}{{/isEnum}}{{^isEnum}}{{{dataType}}}{{/isEnum}}{{^required}}?{{#defaultValue}} = {{>param_default_value}}{{/defaultValue}}{{^defaultValue}} = null{{/defaultValue}}{{/required}}{{^-last}}, {{/-last}}{{/allParams}}) : RequestConfig<{{#hasBodyParam}}{{#bodyParams}}{{{dataType}}}{{/bodyParams}}{{/hasBodyParam}}{{^hasBodyParam}}{{^hasFormParams}}Unit{{/hasFormParams}}{{#hasFormParams}}Map<String, PartConfig<*>>{{/hasFormParams}}{{/hasBodyParam}}> {
         val localVariableBody = {{#hasBodyParam}}{{!
           }}{{#bodyParams}}{{{paramName}}}{{/bodyParams}}{{/hasBodyParam}}{{^hasBodyParam}}{{!
           }}{{^hasFormParams}}null{{/hasFormParams}}{{!
@@ -95,8 +95,8 @@ import {{packageName}}.infrastructure.*
             "{{{baseName}}}" to PartConfig(body = {{{paramName}}}{{#isEnum}}{{^required}}?{{/required}}.value{{/isEnum}}, headers = mutableMapOf({{#contentType}}"Content-Type" to "{{contentType}}"{{/contentType}})),{{!
             }}{{/formParams}}){{/hasFormParams}}{{!
         }}{{/hasBodyParam}}
-        val localVariableQuery = {{^hasQueryParams}}mutableMapOf<kotlin.String, kotlin.collections.List<kotlin.String>>()
-{{/hasQueryParams}}{{#hasQueryParams}}mutableMapOf<kotlin.String, kotlin.collections.List<kotlin.String>>()
+        val localVariableQuery = {{^hasQueryParams}}mutableMapOf<String, List<String>>()
+{{/hasQueryParams}}{{#hasQueryParams}}mutableMapOf<String, List<String>>()
             .apply {
                 {{#queryParams}}
                 {{^required}}

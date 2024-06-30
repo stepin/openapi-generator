@@ -83,20 +83,20 @@ public class AbstractKotlinCodegenTest {
 
     @Test
     public void toEnumValue() {
-        assertEquals(codegen.toEnumValue("1", "kotlin.Int"), "1");
-        assertEquals(codegen.toEnumValue("1", "kotlin.Double"), "1.0");
-        assertEquals(codegen.toEnumValue("1.3", "kotlin.Double"), "1.3");
-        assertEquals(codegen.toEnumValue("1337", "kotlin.Long"), "1337");
-        assertEquals(codegen.toEnumValue("5", "kotlin.Float"), "5f");
-        assertEquals(codegen.toEnumValue("1.0", "kotlin.Float"), "1.0f");
+        assertEquals(codegen.toEnumValue("1", "Int"), "1");
+        assertEquals(codegen.toEnumValue("1", "Double"), "1.0");
+        assertEquals(codegen.toEnumValue("1.3", "Double"), "1.3");
+        assertEquals(codegen.toEnumValue("1337", "Long"), "1337");
+        assertEquals(codegen.toEnumValue("5", "Float"), "5f");
+        assertEquals(codegen.toEnumValue("1.0", "Float"), "1.0f");
         assertEquals(codegen.toEnumValue("data", "Something"), "\"data\"");
         assertEquals(codegen.toEnumValue("data/*", "Something"), "\"data/*\"");
     }
 
     @Test
     public void isDataTypeString() {
-        assertFalse(codegen.isDataTypeString("kotlin.Int"));
-        assertTrue(codegen.isDataTypeString("kotlin.String"));
+        assertFalse(codegen.isDataTypeString("Int"));
+        assertTrue(codegen.isDataTypeString("String"));
         assertTrue(codegen.isDataTypeString("String"));
     }
 
@@ -266,7 +266,7 @@ public class AbstractKotlinCodegenTest {
         CodegenModel cm1 = codegen.fromModel("ModelWithEnumPropertyHavingDefault", test1);
 
         // Make sure we got the container object.
-        Assert.assertEquals(cm1.getDataType(), "kotlin.Any");
+        Assert.assertEquals(cm1.getDataType(), "Any");
         Assert.assertEquals(codegen.getTypeDeclaration("MyResponse"), "MyResponse");
 
         // We need to postProcess the model for enums to be processed

@@ -187,7 +187,7 @@ public class KotlinServerCodegenTest {
         Path stuffApi = Paths.get(outputPath + "/apis/StuffApi.kt");
         assertFileContains(
                 stuffApi,
-                "fun findStuff(): kotlin.collections.List<Stuff>"
+                "fun findStuff(): List<Stuff>"
         );
         assertFileNotContains(
                 stuffApi,
@@ -195,7 +195,7 @@ public class KotlinServerCodegenTest {
         );
         assertFileContains(
                 stuffApi,
-                "fun findUniqueStuff(): kotlin.collections.Set<Stuff>"
+                "fun findUniqueStuff(): Set<Stuff>"
         );
     }
 

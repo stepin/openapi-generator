@@ -48,7 +48,7 @@ import {{packageName}}.infrastructure.Success
 import {{packageName}}.infrastructure.toMultiValue
 
 {{#operations}}
-{{#nonPublicApi}}internal {{/nonPublicApi}}class {{classname}}(basePath: kotlin.String = defaultBasePath, client: OkHttpClient = ApiClient.defaultClient) : ApiClient(basePath, client) {
+{{#nonPublicApi}}internal {{/nonPublicApi}}class {{classname}}(basePath: String = defaultBasePath, client: OkHttpClient = ApiClient.defaultClient) : ApiClient(basePath, client) {
     companion object {
         @JvmStatic
         val defaultBasePath: String by lazy {
@@ -62,7 +62,7 @@ import {{packageName}}.infrastructure.toMultiValue
     /**
      * enum for parameter {{paramName}}
      */
-     {{#nonPublicApi}}internal {{/nonPublicApi}}enum class {{enumName}}{{operationIdCamelCase}}(val value: {{^isContainer}}{{dataType}}{{/isContainer}}{{#isContainer}}kotlin.String{{/isContainer}}) {
+     {{#nonPublicApi}}internal {{/nonPublicApi}}enum class {{enumName}}{{operationIdCamelCase}}(val value: {{^isContainer}}{{dataType}}{{/isContainer}}{{#isContainer}}String{{/isContainer}}) {
      {{^enumUnknownDefaultCase}}
      {{#allowableValues}}
      {{#enumVars}}
@@ -131,7 +131,7 @@ import {{packageName}}.infrastructure.toMultiValue
     {{#isDeprecated}}
     @Deprecated(message = "This operation is deprecated.")
     {{/isDeprecated}}
-    {{^doNotUseRxAndCoroutines}}{{#useCoroutines}}suspend {{/useCoroutines}}{{/doNotUseRxAndCoroutines}}fun {{operationId}}({{#allParams}}{{{paramName}}}: {{#isEnum}}{{#isContainer}}kotlin.collections.List<{{enumName}}{{operationIdCamelCase}}>{{/isContainer}}{{^isContainer}}{{enumName}}{{operationIdCamelCase}}{{/isContainer}}{{/isEnum}}{{^isEnum}}{{{dataType}}}{{/isEnum}}{{#required}}{{#defaultValue}} = {{^isNumber}}{{#isEnum}}{{enumName}}{{operationIdCamelCase}}.{{enumDefaultValue}}{{/isEnum}}{{^isEnum}}{{{defaultValue}}}{{/isEnum}}{{/isNumber}}{{#isNumber}}{{{dataType}}}("{{{defaultValue}}}"){{/isNumber}}{{/defaultValue}}{{/required}}{{^required}}?{{#defaultValue}} = {{^isNumber}}{{#isEnum}}{{enumName}}{{operationIdCamelCase}}.{{enumDefaultValue}}{{/isEnum}}{{^isEnum}}{{{defaultValue}}}{{/isEnum}}{{/isNumber}}{{#isNumber}}{{{dataType}}}("{{{defaultValue}}}"){{/isNumber}}{{/defaultValue}}{{^defaultValue}} = null{{/defaultValue}}{{/required}}{{^-last}}, {{/-last}}{{/allParams}}) : {{#returnType}}{{{returnType}}}{{#nullableReturnType}}?{{/nullableReturnType}}{{/returnType}}{{^returnType}}Unit{{/returnType}}{{^doNotUseRxAndCoroutines}}{{#useCoroutines}} = withContext(Dispatchers.IO){{/useCoroutines}}{{/doNotUseRxAndCoroutines}} {
+    {{^doNotUseRxAndCoroutines}}{{#useCoroutines}}suspend {{/useCoroutines}}{{/doNotUseRxAndCoroutines}}fun {{operationId}}({{#allParams}}{{{paramName}}}: {{#isEnum}}{{#isContainer}}List<{{enumName}}{{operationIdCamelCase}}>{{/isContainer}}{{^isContainer}}{{enumName}}{{operationIdCamelCase}}{{/isContainer}}{{/isEnum}}{{^isEnum}}{{{dataType}}}{{/isEnum}}{{#required}}{{#defaultValue}} = {{^isNumber}}{{#isEnum}}{{enumName}}{{operationIdCamelCase}}.{{enumDefaultValue}}{{/isEnum}}{{^isEnum}}{{{defaultValue}}}{{/isEnum}}{{/isNumber}}{{#isNumber}}{{{dataType}}}("{{{defaultValue}}}"){{/isNumber}}{{/defaultValue}}{{/required}}{{^required}}?{{#defaultValue}} = {{^isNumber}}{{#isEnum}}{{enumName}}{{operationIdCamelCase}}.{{enumDefaultValue}}{{/isEnum}}{{^isEnum}}{{{defaultValue}}}{{/isEnum}}{{/isNumber}}{{#isNumber}}{{{dataType}}}("{{{defaultValue}}}"){{/isNumber}}{{/defaultValue}}{{^defaultValue}} = null{{/defaultValue}}{{/required}}{{^-last}}, {{/-last}}{{/allParams}}) : {{#returnType}}{{{returnType}}}{{#nullableReturnType}}?{{/nullableReturnType}}{{/returnType}}{{^returnType}}Unit{{/returnType}}{{^doNotUseRxAndCoroutines}}{{#useCoroutines}} = withContext(Dispatchers.IO){{/useCoroutines}}{{/doNotUseRxAndCoroutines}} {
         {{#isDeprecated}}
         @Suppress("DEPRECATION")
         {{/isDeprecated}}
@@ -165,7 +165,7 @@ import {{packageName}}.infrastructure.toMultiValue
     {{#isDeprecated}}
     @Deprecated(message = "This operation is deprecated.")
     {{/isDeprecated}}
-    {{^doNotUseRxAndCoroutines}}{{#useCoroutines}}suspend {{/useCoroutines}}{{/doNotUseRxAndCoroutines}}fun {{operationId}}WithHttpInfo({{#allParams}}{{{paramName}}}: {{#isEnum}}{{#isContainer}}kotlin.collections.List<{{enumName}}{{operationIdCamelCase}}>{{/isContainer}}{{^isContainer}}{{enumName}}{{operationIdCamelCase}}{{/isContainer}}{{/isEnum}}{{^isEnum}}{{{dataType}}}{{/isEnum}}{{^required}}?{{/required}}{{^-last}}, {{/-last}}{{/allParams}}) : ApiResponse<{{#returnType}}{{{returnType}}}?{{/returnType}}{{^returnType}}Unit?{{/returnType}}>{{^doNotUseRxAndCoroutines}}{{#useCoroutines}} = withContext(Dispatchers.IO){{/useCoroutines}}{{/doNotUseRxAndCoroutines}} {
+    {{^doNotUseRxAndCoroutines}}{{#useCoroutines}}suspend {{/useCoroutines}}{{/doNotUseRxAndCoroutines}}fun {{operationId}}WithHttpInfo({{#allParams}}{{{paramName}}}: {{#isEnum}}{{#isContainer}}List<{{enumName}}{{operationIdCamelCase}}>{{/isContainer}}{{^isContainer}}{{enumName}}{{operationIdCamelCase}}{{/isContainer}}{{/isEnum}}{{^isEnum}}{{{dataType}}}{{/isEnum}}{{^required}}?{{/required}}{{^-last}}, {{/-last}}{{/allParams}}) : ApiResponse<{{#returnType}}{{{returnType}}}?{{/returnType}}{{^returnType}}Unit?{{/returnType}}>{{^doNotUseRxAndCoroutines}}{{#useCoroutines}} = withContext(Dispatchers.IO){{/useCoroutines}}{{/doNotUseRxAndCoroutines}} {
         {{#isDeprecated}}
         @Suppress("DEPRECATION")
         {{/isDeprecated}}
@@ -185,7 +185,7 @@ import {{packageName}}.infrastructure.toMultiValue
     {{#isDeprecated}}
     @Deprecated(message = "This operation is deprecated.")
     {{/isDeprecated}}
-    fun {{operationId}}RequestConfig({{#allParams}}{{{paramName}}}: {{#isEnum}}{{#isContainer}}kotlin.collections.List<{{enumName}}{{operationIdCamelCase}}>{{/isContainer}}{{^isContainer}}{{enumName}}{{operationIdCamelCase}}{{/isContainer}}{{/isEnum}}{{^isEnum}}{{{dataType}}}{{/isEnum}}{{^required}}?{{/required}}{{^-last}}, {{/-last}}{{/allParams}}) : RequestConfig<{{#hasBodyParam}}{{#bodyParams}}{{{dataType}}}{{/bodyParams}}{{/hasBodyParam}}{{^hasBodyParam}}{{^hasFormParams}}Unit{{/hasFormParams}}{{#hasFormParams}}Map<String, PartConfig<*>>{{/hasFormParams}}{{/hasBodyParam}}> {
+    fun {{operationId}}RequestConfig({{#allParams}}{{{paramName}}}: {{#isEnum}}{{#isContainer}}List<{{enumName}}{{operationIdCamelCase}}>{{/isContainer}}{{^isContainer}}{{enumName}}{{operationIdCamelCase}}{{/isContainer}}{{/isEnum}}{{^isEnum}}{{{dataType}}}{{/isEnum}}{{^required}}?{{/required}}{{^-last}}, {{/-last}}{{/allParams}}) : RequestConfig<{{#hasBodyParam}}{{#bodyParams}}{{{dataType}}}{{/bodyParams}}{{/hasBodyParam}}{{^hasBodyParam}}{{^hasFormParams}}Unit{{/hasFormParams}}{{#hasFormParams}}Map<String, PartConfig<*>>{{/hasFormParams}}{{/hasBodyParam}}> {
         val localVariableBody = {{#hasBodyParam}}{{!
           }}{{#bodyParams}}{{{paramName}}}{{/bodyParams}}{{/hasBodyParam}}{{^hasBodyParam}}{{!
           }}{{^hasFormParams}}null{{/hasFormParams}}{{!
@@ -194,7 +194,7 @@ import {{packageName}}.infrastructure.toMultiValue
             }}{{/formParams}}){{/hasFormParams}}{{!
         }}{{/hasBodyParam}}
         val localVariableQuery: MultiValueMap = {{^hasQueryParams}}mutableMapOf()
-{{/hasQueryParams}}{{#hasQueryParams}}mutableMapOf<kotlin.String, kotlin.collections.List<kotlin.String>>()
+{{/hasQueryParams}}{{#hasQueryParams}}mutableMapOf<String, List<String>>()
             .apply {
                 {{#queryParams}}
                 {{^required}}
@@ -235,7 +235,7 @@ import {{packageName}}.infrastructure.toMultiValue
 
     {{/operation}}
 
-    private fun encodeURIComponent(uriComponent: kotlin.String): kotlin.String =
+    private fun encodeURIComponent(uriComponent: String): String =
         HttpUrl.Builder().scheme("http").host("localhost").addPathSegment(uriComponent).build().encodedPathSegments{{#jvm-okhttp3}}(){{/jvm-okhttp3}}[0]
 }
 {{/operations}}
