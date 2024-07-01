@@ -153,56 +153,56 @@ public class KtormSchemaCodegen extends AbstractKotlinCodegen {
         );
 
         typeMapping = new HashMap<String, String>();
-        typeMapping.put("string", "kotlin.String");
-        typeMapping.put("boolean", "kotlin.Boolean");
-        typeMapping.put("integer", "kotlin.Int");
-        typeMapping.put("float", "kotlin.Float");
-        typeMapping.put("long", "kotlin.Long");
-        typeMapping.put("double", "kotlin.Double");
-        typeMapping.put("ByteArray", "kotlin.ByteArray");
+        typeMapping.put("string", "String");
+        typeMapping.put("boolean", "Boolean");
+        typeMapping.put("integer", "Int");
+        typeMapping.put("float", "Float");
+        typeMapping.put("long", "Long");
+        typeMapping.put("double", "Double");
+        typeMapping.put("ByteArray", "ByteArray");
         typeMapping.put("number", "java.math.BigDecimal");
         typeMapping.put("date-time", "java.time.LocalDateTime");
         typeMapping.put("date", "java.time.LocalDate");
         typeMapping.put("file", "java.io.File");
-        typeMapping.put("array", "kotlin.Array");
-        typeMapping.put("list", "kotlin.collections.List");
-        typeMapping.put("set", "kotlin.collections.Set");
-        typeMapping.put("map", "kotlin.collections.Map");
-        typeMapping.put("object", "kotlin.Any");
-        typeMapping.put("binary", "kotlin.ByteArray");
+        typeMapping.put("array", "Array");
+        typeMapping.put("list", "List");
+        typeMapping.put("set", "Set");
+        typeMapping.put("map", "Map");
+        typeMapping.put("object", "Any");
+        typeMapping.put("binary", "ByteArray");
         typeMapping.put("Date", "java.time.LocalDate");
         typeMapping.put("DateTime", "java.time.LocalDateTime");
         //missing on baseclass
-        typeMapping.put("byte", "kotlin.Byte");
-        typeMapping.put("short", "kotlin.Short");
-        typeMapping.put("char", "kotlin.String");
-        typeMapping.put("real", "kotlin.Double");
+        typeMapping.put("byte", "Byte");
+        typeMapping.put("short", "Short");
+        typeMapping.put("char", "String");
+        typeMapping.put("real", "Double");
         typeMapping.put("UUID", "java.util.UUID"); //be explicit
         typeMapping.put("URI", "java.net.URI"); //be explicit
         typeMapping.put("decimal", "java.math.BigDecimal");
         typeMapping.put("BigDecimal", "java.math.BigDecimal");
-        typeMapping.put("AnyType", "kotlin.Any");
-        typeMapping.put("password", "kotlin.String"); //nice to have
+        typeMapping.put("AnyType", "Any");
+        typeMapping.put("password", "String"); //nice to have
 
         //mappings between kotlin and ktor
         // ref: https://ktorm.liuwj.me/en/schema-definition.html
-        sqlTypeMapping.put("kotlin.String", SqlType.Text);
-        sqlTypeMapping.put("kotlin.Boolean", SqlType.Boolean);
-        sqlTypeMapping.put("kotlin.Byte", SqlType.Int);
-        sqlTypeMapping.put("kotlin.Short", SqlType.Int);
-        sqlTypeMapping.put("kotlin.Int", SqlType.Int);
-        sqlTypeMapping.put("kotlin.Long", SqlType.Long);
-        sqlTypeMapping.put("kotlin.Float", SqlType.Float);
-        sqlTypeMapping.put("kotlin.Double", SqlType.Double);
-        sqlTypeMapping.put("kotlin.ByteArray", SqlType.Blob);
-        sqlTypeMapping.put("kotlin.Array", SqlType.Blob);
-        sqlTypeMapping.put("kotlin.collections.List", SqlType.Blob);
-        sqlTypeMapping.put("kotlin.collections.MutableList", SqlType.Blob);
-        sqlTypeMapping.put("kotlin.collections.Set", SqlType.Blob);
-        sqlTypeMapping.put("kotlin.collections.MutableSet", SqlType.Blob);
-        sqlTypeMapping.put("kotlin.collections.Map", SqlType.Blob);
-        sqlTypeMapping.put("kotlin.collections.MutableMap", SqlType.Blob);
-        sqlTypeMapping.put("kotlin.Any", SqlType.Blob);
+        sqlTypeMapping.put("String", SqlType.Text);
+        sqlTypeMapping.put("Boolean", SqlType.Boolean);
+        sqlTypeMapping.put("Byte", SqlType.Int);
+        sqlTypeMapping.put("Short", SqlType.Int);
+        sqlTypeMapping.put("Int", SqlType.Int);
+        sqlTypeMapping.put("Long", SqlType.Long);
+        sqlTypeMapping.put("Float", SqlType.Float);
+        sqlTypeMapping.put("Double", SqlType.Double);
+        sqlTypeMapping.put("ByteArray", SqlType.Blob);
+        sqlTypeMapping.put("Array", SqlType.Blob);
+        sqlTypeMapping.put("List", SqlType.Blob);
+        sqlTypeMapping.put("MutableList", SqlType.Blob);
+        sqlTypeMapping.put("Set", SqlType.Blob);
+        sqlTypeMapping.put("MutableSet", SqlType.Blob);
+        sqlTypeMapping.put("Map", SqlType.Blob);
+        sqlTypeMapping.put("MutableMap", SqlType.Blob);
+        sqlTypeMapping.put("Any", SqlType.Blob);
         sqlTypeMapping.put("java.io.File", SqlType.Blob);
         sqlTypeMapping.put("java.math.BigDecimal", SqlType.Decimal);
         sqlTypeMapping.put("java.time.LocalDateTime", SqlType.DateTime);
@@ -733,7 +733,7 @@ public class KtormSchemaCodegen extends AbstractKotlinCodegen {
         String modelName = model.getName();
         String tryDataType = property.isArray ? property.items.dataType : property.dataType;
         String tryDataFormat = property.isArray ? property.items.dataFormat : property.dataFormat;
-        Boolean isPrimitive = (tryDataType.startsWith("kotlin.") || tryDataType.startsWith("java."));
+        Boolean isPrimitive = (tryDataType.startsWith("") || tryDataType.startsWith("java."));
         String propName = isPrimitive ? property.getName() : tryDataType;
 
         String pkName = toTitleCase(toModelName(modelName));
@@ -836,8 +836,8 @@ public class KtormSchemaCodegen extends AbstractKotlinCodegen {
             case SqlType.Json:
                 return false;
             default:
-                // If its explicitly configured kotlin.* and java.* types.
-                if (dataType.startsWith("kotlin.") || dataType.startsWith("java.")) {
+                // If its explicitly configured * and java.* types.
+                if (dataType.startsWith("") || dataType.startsWith("java.")) {
                     // We just have to serialize it.
                     return false;
                 }

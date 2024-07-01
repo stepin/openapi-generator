@@ -67,31 +67,31 @@ These options may be applied as additional-properties (cli) or configOptions (pl
 
 | Type/Alias | Instantiated By |
 | ---------- | --------------- |
-|array|kotlin.collections.ArrayList|
-|list|kotlin.collections.ArrayList|
-|map|kotlin.collections.HashMap|
+|array|ArrayList|
+|list|ArrayList|
+|map|HashMap|
 
 
 ## LANGUAGE PRIMITIVES
 
 <ul class="column-ul">
-<li>kotlin.Array</li>
-<li>kotlin.Boolean</li>
-<li>kotlin.Byte</li>
-<li>kotlin.ByteArray</li>
-<li>kotlin.Char</li>
-<li>kotlin.Double</li>
-<li>kotlin.Float</li>
-<li>kotlin.Int</li>
-<li>kotlin.Long</li>
-<li>kotlin.Short</li>
-<li>kotlin.String</li>
-<li>kotlin.collections.List</li>
-<li>kotlin.collections.Map</li>
-<li>kotlin.collections.MutableList</li>
-<li>kotlin.collections.MutableMap</li>
-<li>kotlin.collections.MutableSet</li>
-<li>kotlin.collections.Set</li>
+<li>Array</li>
+<li>Boolean</li>
+<li>Byte</li>
+<li>ByteArray</li>
+<li>Char</li>
+<li>Double</li>
+<li>Float</li>
+<li>Int</li>
+<li>Long</li>
+<li>Short</li>
+<li>String</li>
+<li>List</li>
+<li>Map</li>
+<li>MutableList</li>
+<li>MutableMap</li>
+<li>MutableSet</li>
+<li>Set</li>
 </ul>
 
 ## RESERVED WORDS

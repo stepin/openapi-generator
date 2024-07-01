@@ -137,41 +137,41 @@ public class KtormSchemaCodegenTest {
     @Test
     public void testMatchedColKotlinType() {
         // *1 - format specifiers aren't used
-        Assert.assertEquals(getMatchedKotlinType(new StringSchema()), "kotlin.String");
-        Assert.assertEquals(getMatchedKotlinType(new StringSchema().type("char")), "kotlin.String");
-        Assert.assertEquals(getMatchedKotlinType(new StringSchema().format("char")), "kotlin.String");
-        Assert.assertEquals(getMatchedKotlinType(new BooleanSchema()), "kotlin.Boolean");
-        Assert.assertEquals(getMatchedKotlinType(new IntegerSchema().type(SchemaTypeUtil.BYTE_FORMAT)), "kotlin.Byte");
-        Assert.assertEquals(getMatchedKotlinType(new IntegerSchema().format(SchemaTypeUtil.BYTE_FORMAT)), "kotlin.Int"); //*1
-        Assert.assertEquals(getMatchedKotlinType(new IntegerSchema().type("short")), "kotlin.Short");
-        Assert.assertEquals(getMatchedKotlinType(new IntegerSchema().format("short")), "kotlin.Int"); //*1
-        Assert.assertEquals(getMatchedKotlinType(new IntegerSchema()), "kotlin.Int");
-        Assert.assertEquals(getMatchedKotlinType(new IntegerSchema().type("integer")), "kotlin.Int");
-        Assert.assertEquals(getMatchedKotlinType(new IntegerSchema().format("integer")), "kotlin.Int"); //*1
-        Assert.assertEquals(getMatchedKotlinType(new IntegerSchema().format(SchemaTypeUtil.INTEGER32_FORMAT)), "kotlin.Int");
-        Assert.assertEquals(getMatchedKotlinType(new IntegerSchema().type("long")), "kotlin.Long");
-        Assert.assertEquals(getMatchedKotlinType(new IntegerSchema().format(SchemaTypeUtil.INTEGER64_FORMAT)), "kotlin.Long");
-        Assert.assertEquals(getMatchedKotlinType(new ObjectSchema().type(SchemaTypeUtil.FLOAT_FORMAT)), "kotlin.Float");
-        Assert.assertEquals(getMatchedKotlinType(new NumberSchema().format(SchemaTypeUtil.FLOAT_FORMAT)), "kotlin.Float");
-        Assert.assertEquals(getMatchedKotlinType(new ObjectSchema().type(SchemaTypeUtil.DOUBLE_FORMAT)), "kotlin.Double");
-        Assert.assertEquals(getMatchedKotlinType(new NumberSchema().format(SchemaTypeUtil.DOUBLE_FORMAT)), "kotlin.Double");
-        Assert.assertEquals(getMatchedKotlinType(new ObjectSchema().type(SchemaTypeUtil.FLOAT_FORMAT).format(SchemaTypeUtil.DOUBLE_FORMAT)), "kotlin.Float"); //*1
-        Assert.assertEquals(getMatchedKotlinType(new ObjectSchema().type(SchemaTypeUtil.DOUBLE_FORMAT).format(SchemaTypeUtil.FLOAT_FORMAT)), "kotlin.Double"); //*1
-        Assert.assertEquals(getMatchedKotlinType(new ObjectSchema().type("real")), "kotlin.Double");
+        Assert.assertEquals(getMatchedKotlinType(new StringSchema()), "String");
+        Assert.assertEquals(getMatchedKotlinType(new StringSchema().type("char")), "String");
+        Assert.assertEquals(getMatchedKotlinType(new StringSchema().format("char")), "String");
+        Assert.assertEquals(getMatchedKotlinType(new BooleanSchema()), "Boolean");
+        Assert.assertEquals(getMatchedKotlinType(new IntegerSchema().type(SchemaTypeUtil.BYTE_FORMAT)), "Byte");
+        Assert.assertEquals(getMatchedKotlinType(new IntegerSchema().format(SchemaTypeUtil.BYTE_FORMAT)), "Int"); //*1
+        Assert.assertEquals(getMatchedKotlinType(new IntegerSchema().type("short")), "Short");
+        Assert.assertEquals(getMatchedKotlinType(new IntegerSchema().format("short")), "Int"); //*1
+        Assert.assertEquals(getMatchedKotlinType(new IntegerSchema()), "Int");
+        Assert.assertEquals(getMatchedKotlinType(new IntegerSchema().type("integer")), "Int");
+        Assert.assertEquals(getMatchedKotlinType(new IntegerSchema().format("integer")), "Int"); //*1
+        Assert.assertEquals(getMatchedKotlinType(new IntegerSchema().format(SchemaTypeUtil.INTEGER32_FORMAT)), "Int");
+        Assert.assertEquals(getMatchedKotlinType(new IntegerSchema().type("long")), "Long");
+        Assert.assertEquals(getMatchedKotlinType(new IntegerSchema().format(SchemaTypeUtil.INTEGER64_FORMAT)), "Long");
+        Assert.assertEquals(getMatchedKotlinType(new ObjectSchema().type(SchemaTypeUtil.FLOAT_FORMAT)), "Float");
+        Assert.assertEquals(getMatchedKotlinType(new NumberSchema().format(SchemaTypeUtil.FLOAT_FORMAT)), "Float");
+        Assert.assertEquals(getMatchedKotlinType(new ObjectSchema().type(SchemaTypeUtil.DOUBLE_FORMAT)), "Double");
+        Assert.assertEquals(getMatchedKotlinType(new NumberSchema().format(SchemaTypeUtil.DOUBLE_FORMAT)), "Double");
+        Assert.assertEquals(getMatchedKotlinType(new ObjectSchema().type(SchemaTypeUtil.FLOAT_FORMAT).format(SchemaTypeUtil.DOUBLE_FORMAT)), "Float"); //*1
+        Assert.assertEquals(getMatchedKotlinType(new ObjectSchema().type(SchemaTypeUtil.DOUBLE_FORMAT).format(SchemaTypeUtil.FLOAT_FORMAT)), "Double"); //*1
+        Assert.assertEquals(getMatchedKotlinType(new ObjectSchema().type("real")), "Double");
         Assert.assertEquals(getMatchedKotlinType(new NumberSchema().format("real")), "java.math.BigDecimal"); //*1
         Assert.assertEquals(getMatchedKotlinType(new NumberSchema().type(SchemaTypeUtil.NUMBER_TYPE)), "java.math.BigDecimal");
         Assert.assertEquals(getMatchedKotlinType(new NumberSchema().type("decimal")), "java.math.BigDecimal");
         Assert.assertEquals(getMatchedKotlinType(new NumberSchema().type("BigDecimal")), "java.math.BigDecimal");
-        Assert.assertEquals(getMatchedKotlinType(new ByteArraySchema()), "kotlin.ByteArray");
-        Assert.assertEquals(getMatchedKotlinType(new ArraySchema().items(new IntegerSchema().type(SchemaTypeUtil.BYTE_FORMAT))), "kotlin.Array<kotlin.Byte>");
-        Assert.assertEquals(getMatchedKotlinType(new ArraySchema().items(new IntegerSchema().format(SchemaTypeUtil.BYTE_FORMAT))), "kotlin.Array<kotlin.Int>"); //*1
-        Assert.assertEquals(getMatchedKotlinType(new ArraySchema()), "kotlin.Array<kotlin.String>");
-        Assert.assertEquals(getMatchedKotlinType(new ObjectSchema().type("list")), "kotlin.collections.List");
-        Assert.assertEquals(getMatchedKotlinType(new ObjectSchema().type("set")), "kotlin.collections.Set");
-        Assert.assertEquals(getMatchedKotlinType(new ObjectSchema().type("map")), "kotlin.collections.Map");
-        Assert.assertEquals(getMatchedKotlinType(new ObjectSchema()), "kotlin.Any");
-        Assert.assertEquals(getMatchedKotlinType(new ObjectSchema().type("binary")), "kotlin.ByteArray");
-        Assert.assertEquals(getMatchedKotlinType(new ObjectSchema().type("AnyType")), "kotlin.Any");
+        Assert.assertEquals(getMatchedKotlinType(new ByteArraySchema()), "ByteArray");
+        Assert.assertEquals(getMatchedKotlinType(new ArraySchema().items(new IntegerSchema().type(SchemaTypeUtil.BYTE_FORMAT))), "Array<Byte>");
+        Assert.assertEquals(getMatchedKotlinType(new ArraySchema().items(new IntegerSchema().format(SchemaTypeUtil.BYTE_FORMAT))), "Array<Int>"); //*1
+        Assert.assertEquals(getMatchedKotlinType(new ArraySchema()), "Array<String>");
+        Assert.assertEquals(getMatchedKotlinType(new ObjectSchema().type("list")), "List");
+        Assert.assertEquals(getMatchedKotlinType(new ObjectSchema().type("set")), "Set");
+        Assert.assertEquals(getMatchedKotlinType(new ObjectSchema().type("map")), "Map");
+        Assert.assertEquals(getMatchedKotlinType(new ObjectSchema()), "Any");
+        Assert.assertEquals(getMatchedKotlinType(new ObjectSchema().type("binary")), "ByteArray");
+        Assert.assertEquals(getMatchedKotlinType(new ObjectSchema().type("AnyType")), "Any");
         Assert.assertEquals(getMatchedKotlinType(new BinarySchema()), "java.io.File"); //looks like a bug
         Assert.assertEquals(getMatchedKotlinType(new FileSchema()), "java.io.File");
         Assert.assertEquals(getMatchedKotlinType(new DateSchema()), "java.time.LocalDate");
@@ -180,8 +180,8 @@ public class KtormSchemaCodegenTest {
         Assert.assertEquals(getMatchedKotlinType(new ObjectSchema().type("UUID")), "java.util.UUID");
         Assert.assertEquals(getMatchedKotlinType(new StringSchema().format("URI")), "java.net.URI");
         Assert.assertEquals(getMatchedKotlinType(new ObjectSchema().type("URI")), "java.net.URI");
-        Assert.assertEquals(getMatchedKotlinType(new StringSchema().format("password")), "kotlin.String");
-        Assert.assertEquals(getMatchedKotlinType(new StringSchema().type("password")), "kotlin.String");
+        Assert.assertEquals(getMatchedKotlinType(new StringSchema().format("password")), "String");
+        Assert.assertEquals(getMatchedKotlinType(new StringSchema().type("password")), "String");
     }
 
     @Test

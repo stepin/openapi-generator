@@ -22,7 +22,7 @@ These options may be applied as additional-properties (cli) or configOptions (pl
 |apiSuffix|suffix for api classes| |Api|
 |artifactId|Generated artifact id (name of jar).| |kotlin-client|
 |artifactVersion|Generated artifact's package version.| |1.0.0|
-|collectionType|Option. Collection type to use|<dl><dt>**array**</dt><dd>kotlin.Array</dd><dt>**list**</dt><dd>kotlin.collections.List</dd></dl>|list|
+|collectionType|Option. Collection type to use|<dl><dt>**array**</dt><dd>Array</dd><dt>**list**</dt><dd>List</dd></dl>|list|
 |dateLibrary|Option. Date library to use|<dl><dt>**threetenbp-localdatetime**</dt><dd>Threetenbp - Backport of JSR310 (jvm only, for legacy app only)</dd><dt>**kotlinx-datetime**</dt><dd>kotlinx-datetime (preferred for multiplatform)</dd><dt>**string**</dt><dd>String</dd><dt>**java8-localdatetime**</dt><dd>Java 8 native JSR310 (jvm only, for legacy app only)</dd><dt>**java8**</dt><dd>Java 8 native JSR310 (jvm only, preferred for jdk 1.8+)</dd><dt>**threetenbp**</dt><dd>Threetenbp - Backport of JSR310 (jvm only, preferred for jdk &lt; 1.8)</dd></dl>|java8|
 |enumPropertyNaming|Naming convention for enum properties: 'camelCase', 'PascalCase', 'snake_case', 'UPPERCASE', and 'original'| |original|
 |generateOneOfAnyOfWrappers|Generate oneOf, anyOf schemas as wrappers.| |false|
@@ -43,7 +43,7 @@ These options may be applied as additional-properties (cli) or configOptions (pl
 |sortModelPropertiesByRequiredFlag|Sort model properties to place required parameters before optional parameters.| |null|
 |sortParamsByRequiredFlag|Sort method arguments to place required parameters before optional parameters.| |null|
 |sourceFolder|source folder for generated code| |src/main/kotlin|
-|supportAndroidApiLevel25AndBelow|[WARNING] This flag will generate code that has a known security vulnerability. It uses `kotlin.io.createTempFile` instead of `java.nio.file.Files.createTempFile` in order to support Android API level 25 and bellow. For more info, please check the following links https://github.com/OpenAPITools/openapi-generator/security/advisories/GHSA-23x4-m842-fmwf, https://github.com/OpenAPITools/openapi-generator/pull/9284| |false|
+|supportAndroidApiLevel25AndBelow|[WARNING] This flag will generate code that has a known security vulnerability. It uses `io.createTempFile` instead of `java.nio.file.Files.createTempFile` in order to support Android API level 25 and bellow. For more info, please check the following links https://github.com/OpenAPITools/openapi-generator/security/advisories/GHSA-23x4-m842-fmwf, https://github.com/OpenAPITools/openapi-generator/pull/9284| |false|
 |useCoroutines|Whether to use the Coroutines adapter with the retrofit2 library.| |false|
 |useRxJava3|Whether to use the RxJava3 adapter with the retrofit2 library.| |false|
 |useSettingsGradle|Whether the project uses settings.gradle.| |false|
@@ -69,31 +69,31 @@ These options may be applied as additional-properties (cli) or configOptions (pl
 
 | Type/Alias | Instantiated By |
 | ---------- | --------------- |
-|array|kotlin.collections.ArrayList|
-|list|kotlin.collections.ArrayList|
-|map|kotlin.collections.HashMap|
+|array|ArrayList|
+|list|ArrayList|
+|map|HashMap|
 
 
 ## LANGUAGE PRIMITIVES
 
 <ul class="column-ul">
-<li>kotlin.Array</li>
-<li>kotlin.Boolean</li>
-<li>kotlin.Byte</li>
-<li>kotlin.ByteArray</li>
-<li>kotlin.Char</li>
-<li>kotlin.Double</li>
-<li>kotlin.Float</li>
-<li>kotlin.Int</li>
-<li>kotlin.Long</li>
-<li>kotlin.Short</li>
-<li>kotlin.String</li>
-<li>kotlin.collections.List</li>
-<li>kotlin.collections.Map</li>
-<li>kotlin.collections.MutableList</li>
-<li>kotlin.collections.MutableMap</li>
-<li>kotlin.collections.MutableSet</li>
-<li>kotlin.collections.Set</li>
+<li>Array</li>
+<li>Boolean</li>
+<li>Byte</li>
+<li>ByteArray</li>
+<li>Char</li>
+<li>Double</li>
+<li>Float</li>
+<li>Int</li>
+<li>Long</li>
+<li>Short</li>
+<li>String</li>
+<li>List</li>
+<li>Map</li>
+<li>MutableList</li>
+<li>MutableMap</li>
+<li>MutableSet</li>
+<li>Set</li>
 </ul>
 
 ## RESERVED WORDS

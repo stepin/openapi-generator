@@ -140,7 +140,7 @@ import {{packageName}}.auth.*
         auth.bearerToken = bearerToken
     }
 
-    protected suspend fun <T: Any?> multipartFormRequest(requestConfig: RequestConfig<T>, body: List<PartData>?, authNames: kotlin.collections.List<String>): HttpResponse {
+    protected suspend fun <T: Any?> multipartFormRequest(requestConfig: RequestConfig<T>, body: List<PartData>?, authNames: List<String>): HttpResponse {
         return request(requestConfig, MultiPartFormDataContent(body ?: listOf()), authNames)
     }
 
