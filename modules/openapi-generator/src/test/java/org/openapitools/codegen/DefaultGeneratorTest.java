@@ -466,7 +466,7 @@ public class DefaultGeneratorTest {
 
             List<File> files = generator.opts(clientOptInput).generate();
 
-            Assert.assertEquals(files.size(), 27);
+            Assert.assertEquals(files.size(), 28);
 
             // Generator should report a library templated file as a generated file
             TestUtils.ensureContainsFile(files, output, "src/main/kotlin/org/openapitools/client/infrastructure/Errors.kt");
@@ -508,7 +508,7 @@ public class DefaultGeneratorTest {
 
             List<File> files = generator.opts(clientOptInput).generate();
 
-            Assert.assertEquals(files.size(), 27);
+            Assert.assertEquals(files.size(), 28);
 
             // Generator should report README.md as a generated file
             TestUtils.ensureContainsFile(files, output, "README.md");
@@ -573,7 +573,7 @@ public class DefaultGeneratorTest {
 
             List<File> files = generator.opts(clientOptInput).generate();
 
-            Assert.assertEquals(files.size(), 27);
+            Assert.assertEquals(files.size(), 28);
 
             // Generator should report a library templated file as a generated file
             TestUtils.ensureContainsFile(files, output, "src/main/kotlin/org/openapitools/client/infrastructure/Errors.kt");
@@ -627,7 +627,7 @@ public class DefaultGeneratorTest {
 
             List<File> files = generator.opts(clientOptInput).generate();
 
-            Assert.assertEquals(files.size(), 27);
+            Assert.assertEquals(files.size(), 28);
 
             // Generator should report README.md as a generated file
             TestUtils.ensureContainsFile(files, output, "README.md");
@@ -670,7 +670,7 @@ public class DefaultGeneratorTest {
         Assert.assertEquals(servers.get(1).url, "http://trailingshlash.io:80/v1");
         Assert.assertEquals(servers.get(2).url, "http://notrailingslash.io:80/v2");
     }
-    
+
     @Test
     public void testHandlesRelativeUrlsInServers() {
         OpenAPI openAPI = TestUtils.parseFlattenSpec("src/test/resources/3_0/issue_10056.yaml");
@@ -775,7 +775,7 @@ public class DefaultGeneratorTest {
         // all fine, we have passed
     }
 
-    
+
     private DefaultGenerator generatorGenerateRecursiveDependentModelsBackwardCompatibility(String recursively) throws IOException {
         DefaultGenerator generator = new DefaultGenerator(false);
         generator.setGeneratorPropertyDefault(CodegenConstants.MODELS, "true");
@@ -812,7 +812,7 @@ public class DefaultGeneratorTest {
 
             // Check expected generated files
             // api sanity check
-            String apiJavaFileName = "src/main/java/org/openapitools/api/ApiApi.java"; 
+            String apiJavaFileName = "src/main/java/org/openapitools/api/ApiApi.java";
             TestUtils.ensureContainsFile(files, output, apiJavaFileName);
             Assert.assertTrue(new File(output, apiJavaFileName).exists());
 
@@ -867,7 +867,7 @@ public class DefaultGeneratorTest {
 
             // Check expected generated files
             // api sanity check
-            String apiJavaFileName = "src/main/java/org/openapitools/api/ApiApi.java"; 
+            String apiJavaFileName = "src/main/java/org/openapitools/api/ApiApi.java";
             TestUtils.ensureContainsFile(files, output, apiJavaFileName);
             Assert.assertTrue(new File(output, apiJavaFileName).exists());
 

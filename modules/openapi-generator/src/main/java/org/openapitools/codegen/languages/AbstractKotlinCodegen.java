@@ -22,6 +22,8 @@ import com.google.common.collect.ImmutableMap;
 import com.samskivert.mustache.Mustache;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
+import java.lang.ProcessBuilder.Redirect;
+import java.nio.charset.StandardCharsets;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.io.FilenameUtils;
@@ -970,20 +972,37 @@ public abstract class AbstractKotlinCodegen extends DefaultCodegen implements Co
         // only process files with kt extension
         if ("kt".equals(FilenameUtils.getExtension(file.toString()))) {
             String command = kotlinPostProcessFile + " " + file;
-            try {
-                Process p = Runtime.getRuntime().exec(command);
-                p.waitFor();
-                int exitValue = p.exitValue();
-                if (exitValue != 0) {
-                    LOGGER.error("Error running the command ({}). Exit value: {}", command, exitValue);
-                } else {
-                    LOGGER.info("Successfully executed: {}", command);
-                }
-            } catch (InterruptedException | IOException e) {
-                LOGGER.error("Error running the command ({}). Exception: {}", command, e.getMessage());
-                // Restore interrupted state
-                Thread.currentThread().interrupt();
+            run(command);
+        }
+    }
+
+    private void run(String command) {
+        // NOTE: as we receive first part of command from env it can have params
+        // so, we have to parse command
+        StringTokenizer st = new StringTokenizer(command);
+        String[] cmdArray = new String[st.countTokens()];
+        for (int i = 0; st.hasMoreTokens(); i++)
+            cmdArray[i] = st.nextToken();
+
+        try {
+            Process p = new ProcessBuilder(cmdArray)
+                .redirectErrorStream(true)
+                .redirectOutput(Redirect.PIPE)
+                .redirectError(Redirect.PIPE)
+                .start();
+            p.waitFor();
+            int exitValue = p.exitValue();
+            if (exitValue != 0) {
+                byte[] encodedOutput = p.getInputStream().readAllBytes();
+                String output = new String(encodedOutput, StandardCharsets.UTF_8);
+                LOGGER.error("Error running the command ({}). Exit value: {}. Output: {}", command, exitValue, output);
+            } else {
+                LOGGER.info("Successfully executed: {}", command);
             }
+        } catch (InterruptedException | IOException e) {
+            LOGGER.error("Error running the command ({}). Exception: {}", command, e.getMessage());
+            // Restore interrupted state
+            Thread.currentThread().interrupt();
         }
     }
 
