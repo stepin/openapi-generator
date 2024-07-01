@@ -54,6 +54,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static java.util.Collections.sort;
+import static org.openapitools.codegen.utils.StringUtils.camelize;
 
 public class KotlinClientCodegen extends AbstractKotlinCodegen {
 
@@ -971,7 +972,7 @@ public class KotlinClientCodegen extends AbstractKotlinCodegen {
                     operation.path = operation.path.substring(1);
                 }
 
-                if (JVM_OKHTTP.equals(getLibrary()) || JVM_OKHTTP4.equals(getLibrary())) {
+                if (JVM_OKHTTP.equals(getLibrary()) || JVM_OKHTTP4.equals(getLibrary()) || JVM_SPRING_HTTP_INTERFACE.equals(getLibrary())) {
                     // Ideally we would do content negotiation to choose the best mediatype, but that would be a next step.
                     // For now we take the first mediatype we can parse and send that.
                     Predicate<Map<String, String>> isSerializable = typeMapping -> {
@@ -1005,6 +1006,11 @@ public class KotlinClientCodegen extends AbstractKotlinCodegen {
                     if (isMultipartType(operation.consumes)) {
                         operation.isMultipart = Boolean.TRUE;
                     }
+                }
+
+                if (JVM_SPRING_HTTP_INTERFACE.equals(getLibrary())) {
+                    // http method verb conversion (e.g. PUT => Put)
+                    operation.httpMethod = camelize(operation.httpMethod.toLowerCase());
                 }
 
                 // import okhttp3.MultipartBody if any parameter is a file

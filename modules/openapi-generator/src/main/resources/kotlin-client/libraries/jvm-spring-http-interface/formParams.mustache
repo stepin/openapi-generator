@@ -1,0 +1,1 @@
+{{#isFormParam}}{{#notFile}}@RequestParam("{{baseName}}") {{paramName}}: {{{dataType}}}{{/notFile}}{{#isFile}}@FormParam(value = "{{baseName}}") {{paramName}}InputStream: MultipartFile{{/isFile}}{{/isFormParam}}

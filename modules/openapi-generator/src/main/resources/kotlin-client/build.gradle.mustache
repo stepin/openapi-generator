@@ -165,6 +165,9 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-webflux:$spring_boot_version"
     implementation "io.projectreactor:reactor-core:3.6.5"
     {{/jvm-spring-webclient}}
+    {{#jvm-spring-http-interface}}
+      implementation "org.springframework.boot:spring-boot-starter-webflux:$spring_boot_version"
+    {{/jvm-spring-http-interface}}
     {{#jvm-spring-restclient}}
     implementation "org.springframework.boot:spring-boot-starter-web:$spring_boot_version"
     {{/jvm-spring-restclient}}

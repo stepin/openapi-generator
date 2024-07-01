@@ -1,0 +1,14 @@
+    /**{{#summary}}
+     * {{{summary}}}{{/summary}}{{#notes}}
+     * {{{notes}}}{{/notes}}{{#description}}
+     * {{{description}}}{{/description}}
+     */
+    @{{httpMethod}}Exchange(
+      url = "{{{path}}}",{{#hasConsumes}}
+      accept = [{{#consumes}}"{{{mediaType}}}"{{#hasMore}}, {{/hasMore}}{{/consumes}}],{{/hasConsumes}}{{#hasProduces}}
+      contentType = {{#produces}}"{{{mediaType}}}"{{/produces}},{{/hasProduces}}
+    )
+    suspend fun {{nickname}}(
+{{#allParams}}      {{>queryParams}}{{>pathParams}}{{>headerParams}}{{>bodyParams}}{{>formParams}},
+{{/allParams}}
+    ): {{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}Unit{{/returnType}}
