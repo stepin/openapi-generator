@@ -1,33 +1,121 @@
 package {{package}}
 
+import org.springframework.http.ResponseEntity
+import org.springframework.web.multipart.MultipartFile
+{{^doNotUseRxAndCoroutines}}
+  {{#useRxJava}}
+    import rx.Observable
+  {{/useRxJava}}
+  {{#useRxJava2}}
+    import io.reactivex.Single
+  {{/useRxJava2}}
+  {{#useRxJava3}}
+    import io.reactivex.rxjava3.core.Single
+  {{/useRxJava3}}
+  {{^returnType}}
+    {{#useRxJava2}}
+      import io.reactivex.Completable
+    {{/useRxJava2}}
+    {{#useRxJava3}}
+      import io.reactivex.rxjava3.core.Completable
+    {{/useRxJava3}}
+  {{/returnType}}
+{{/doNotUseRxAndCoroutines}}
+{{^multiplatform}}
+  {{#gson}}
+    import com.google.gson.annotations.SerializedName
+  {{/gson}}
+  {{#moshi}}
+    import com.squareup.moshi.Json
+  {{/moshi}}
+  {{#jackson}}
+    import com.fasterxml.jackson.annotation.JsonProperty
+  {{/jackson}}
+  {{#kotlinx_serialization}}
+    import kotlinx.serialization.SerialName
+    import kotlinx.serialization.Serializable
+  {{/kotlinx_serialization}}
+{{/multiplatform}}
+{{#multiplatform}}
+  import kotlinx.serialization.*
+{{/multiplatform}}
+
 {{#imports}}import {{import}}
 {{/imports}}
 
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.service.annotation.*
 
-{{#useBeanValidation}}
-{{#jakarta}}
-import jakarta.validation.constraints.*
-import jakarta.validation.Valid
-{{/jakarta}}
-{{^jakarta}}
-import javax.validation.constraints.*
-import javax.validation.Valid
-{{/jakarta}}
-{{/useBeanValidation}}
-
 /**
  * the {{{baseName}}} API
  */
 @HttpExchange(
   url = "/",{{#hasConsumes}}
-  accept = [{{#consumes}}"{{{mediaType}}}"{{#hasMore}}, {{/hasMore}}{{/consumes}}],{{/hasConsumes}}{{#hasProduces}}
+  accept = [{{#consumes}}"{{{mediaType}}}"{{^-last}}, {{/-last}}{{/consumes}}],{{/hasConsumes}}{{#hasProduces}}
   contentType = {{#produces}}"{{{mediaType}}}"{{/produces}},{{/hasProduces}}
 )
 interface {{classname}} {
 {{#operations}}
 {{#operation}}
+  {{#allParams}}
+    {{#isEnum}}
+
+      /**
+      * enum for parameter {{paramName}}
+      */
+      {{#nonPublicApi}}internal {{/nonPublicApi}}enum class {{enumName}}{{operationIdCamelCase}}(val value: {{^isContainer}}{{dataType}}{{/isContainer}}{{#isContainer}}String{{/isContainer}}) {
+      {{^enumUnknownDefaultCase}}
+        {{#allowableValues}}
+          {{#enumVars}}
+            {{^multiplatform}}
+              {{#moshi}}
+                @Json(name = {{^isString}}"{{/isString}}{{{value}}}{{^isString}}"{{/isString}}) {{&name}}({{{value}}}){{^-last}},{{/-last}}
+              {{/moshi}}
+              {{#gson}}
+                @SerializedName(value = {{^isString}}"{{/isString}}{{{value}}}{{^isString}}"{{/isString}}) {{&name}}({{{value}}}){{^-last}},{{/-last}}
+              {{/gson}}
+              {{#jackson}}
+                @JsonProperty(value = {{^isString}}"{{/isString}}{{{value}}}{{^isString}}"{{/isString}}) {{&name}}({{{value}}}){{^-last}},{{/-last}}
+              {{/jackson}}
+              {{#kotlinx_serialization}}
+                @SerialName(value = {{^isString}}"{{/isString}}{{{value}}}{{^isString}}"{{/isString}}) {{&name}}({{{value}}}){{^-last}},{{/-last}}
+              {{/kotlinx_serialization}}
+            {{/multiplatform}}
+            {{#multiplatform}}
+              @SerialName(value = {{^isString}}"{{/isString}}{{{value}}}{{^isString}}"{{/isString}}) {{&name}}({{{value}}}){{^-last}},{{/-last}}
+            {{/multiplatform}}
+          {{/enumVars}}
+        {{/allowableValues}}
+      {{/enumUnknownDefaultCase}}
+      {{#enumUnknownDefaultCase}}
+        {{#allowableValues}}
+          {{#enumVars}}
+            {{^-last}}
+              {{^multiplatform}}
+                {{#moshi}}
+                  @Json(name = {{^isString}}"{{/isString}}{{{value}}}{{^isString}}"{{/isString}}) {{&name}}({{{value}}}),
+                {{/moshi}}
+                {{#gson}}
+                  @SerializedName(value = {{^isString}}"{{/isString}}{{{value}}}{{^isString}}"{{/isString}}) {{&name}}({{{value}}}),
+                {{/gson}}
+                {{#jackson}}
+                  @JsonProperty(value = {{^isString}}"{{/isString}}{{{value}}}{{^isString}}"{{/isString}}) {{&name}}({{{value}}}),
+                {{/jackson}}
+                {{#kotlinx_serialization}}
+                  @SerialName(value = {{^isString}}"{{/isString}}{{{value}}}{{^isString}}"{{/isString}}) {{&name}}({{{value}}}),
+                {{/kotlinx_serialization}}
+              {{/multiplatform}}
+              {{#multiplatform}}
+                @SerialName(value = {{^isString}}"{{/isString}}{{{value}}}{{^isString}}"{{/isString}}) {{&name}}({{{value}}}),
+              {{/multiplatform}}
+            {{/-last}}
+          {{/enumVars}}
+        {{/allowableValues}}
+      {{/enumUnknownDefaultCase}}
+      }
+
+    {{/isEnum}}
+  {{/allParams}}
 {{>apiInterface}}
 {{/operation}}
 }

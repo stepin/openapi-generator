@@ -235,7 +235,7 @@ public class KotlinClientCodegen extends AbstractKotlinCodegen {
         supportedLibraries.put(JVM_OKHTTP4, "[DEFAULT] Platform: Java Virtual Machine. HTTP client: OkHttp 4.2.0 (Android 5.0+ and Java 8+). JSON processing: Moshi 1.8.0.");
         supportedLibraries.put(JVM_SPRING_WEBCLIENT, "Platform: Java Virtual Machine. HTTP: Spring 5 (or 6 with useSpringBoot3 enabled) WebClient. JSON processing: Jackson.");
         supportedLibraries.put(JVM_SPRING_RESTCLIENT, "Platform: Java Virtual Machine. HTTP: Spring 6 RestClient. JSON processing: Jackson.");
-        supportedLibraries.put(JVM_SPRING_HTTP_INTERFACE, "Platform: Java Virtual Machine. HTTP: Spring 6 HTTP Interface with coroutines. JSON processing: Jackson.");
+        supportedLibraries.put(JVM_SPRING_HTTP_INTERFACE, "Platform: Java Virtual Machine. HTTP: Spring 6 HTTP Interface. JSON processing: Jackson.");
         supportedLibraries.put(JVM_RETROFIT2, "Platform: Java Virtual Machine. HTTP client: Retrofit 2.6.2.");
         supportedLibraries.put(MULTIPLATFORM, "Platform: Kotlin multiplatform. HTTP client: Ktor 1.6.7. JSON processing: Kotlinx Serialization: 1.2.1.");
         supportedLibraries.put(JVM_VOLLEY, "Platform: JVM for Android. HTTP client: Volley 1.2.1. JSON processing: gson 2.8.9");
@@ -822,9 +822,6 @@ public class KotlinClientCodegen extends AbstractKotlinCodegen {
         if (additionalProperties.getOrDefault(USE_SPRING_BOOT3, false).equals(false)) {
             throw new RuntimeException("This library must use Spring Boot 3. Try adding '--additional-properties useSpringBoot3=true' to your command.");
         }
-        if (additionalProperties.getOrDefault(USE_COROUTINES, false).equals(false)) {
-            throw new RuntimeException("This library must use coroutines. Try adding '--additional-properties useCoroutines=true' to your command.");
-        }
 
         proccessJvmSpring(infrastructureFolder);
         additionalProperties.put(JVM_SPRING_HTTP_INTERFACE, true);
@@ -996,9 +993,12 @@ public class KotlinClientCodegen extends AbstractKotlinCodegen {
                             .collect(Collectors.toList());
                     operation.hasConsumes = operation.consumes != null && !operation.consumes.isEmpty();
 
-                    operation.produces = operation.produces == null ? null : operation.produces.stream()
-                            .filter(isSerializable)
-                            .collect(Collectors.toList());
+                    operation.produces =
+                        operation.produces == null || "GET".equals(operation.httpMethod)
+                            ? null
+                            : operation.produces.stream()
+                                .filter(isSerializable)
+                                .collect(Collectors.toList());
                     operation.hasProduces = operation.produces != null && !operation.produces.isEmpty();
                 }
 

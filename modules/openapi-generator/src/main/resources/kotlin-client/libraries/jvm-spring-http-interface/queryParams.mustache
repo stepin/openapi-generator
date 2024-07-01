@@ -1,1 +1,1 @@
-{{#isQueryParam}}@RequestParam("{{baseName}}"){{#useBeanValidation}}{{>beanValidationQueryParams}}{{/useBeanValidation}} {{paramName}}: {{{dataType}}}{{/isQueryParam}}
+{{#isQueryParam}}{{#isDeepObject}}{{>queryParam}}{{/isDeepObject}}{{^isDeepObject}}{{#isExplode}}{{#hasVars}}{{#vars}}{{>explodedQueryParam}}{{^-last}}, {{/-last}}{{/vars}}{{/hasVars}}{{^hasVars}}{{>queryParam}}{{/hasVars}}{{/isExplode}}{{^isExplode}}{{>queryParam}}{{/isExplode}}{{/isDeepObject}}{{/isQueryParam}}
