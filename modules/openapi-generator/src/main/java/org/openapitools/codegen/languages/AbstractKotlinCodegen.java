@@ -193,6 +193,7 @@ public abstract class AbstractKotlinCodegen extends DefaultCodegen implements Co
         ));
 
         defaultIncludes = new HashSet<>(Arrays.asList(
+                "Any",
                 "Byte",
                 "ByteArray",
                 "Short",
@@ -202,6 +203,7 @@ public abstract class AbstractKotlinCodegen extends DefaultCodegen implements Co
                 "Double",
                 "Boolean",
                 "Char",
+                "String",
                 "Array",
                 "List",
                 "MutableList",
@@ -651,7 +653,7 @@ public abstract class AbstractKotlinCodegen extends DefaultCodegen implements Co
         }
 
         // Allow for explicitly configured kotlin.* and java.* types
-        if (name.startsWith("kotlin.") || name.startsWith("java.")) {
+        if (isPrimitive(name)) {
             return name;
         }
 
@@ -699,6 +701,18 @@ public abstract class AbstractKotlinCodegen extends DefaultCodegen implements Co
 
         schemaKeyToModelNameCache.put(name, titleCase(modifiedName));
         return schemaKeyToModelNameCache.get(name);
+    }
+
+    protected Boolean isPrimitive(String name) {
+        String nameWithoutGeneric = name;
+        int genericIndex = name.indexOf("<");
+        if (genericIndex != -1) {
+            nameWithoutGeneric = name.substring(0, genericIndex);
+        }
+        return nameWithoutGeneric.startsWith("kotlin.") ||
+            nameWithoutGeneric.startsWith("java.") ||
+            defaultIncludes.contains(nameWithoutGeneric) ||
+            languageSpecificPrimitives.contains(nameWithoutGeneric);
     }
 
     /**

@@ -733,7 +733,7 @@ public class KtormSchemaCodegen extends AbstractKotlinCodegen {
         String modelName = model.getName();
         String tryDataType = property.isArray ? property.items.dataType : property.dataType;
         String tryDataFormat = property.isArray ? property.items.dataFormat : property.dataFormat;
-        Boolean isPrimitive = (tryDataType.startsWith("") || tryDataType.startsWith("java."));
+        Boolean isPrimitive = isPrimitive(tryDataType);
         String propName = isPrimitive ? property.getName() : tryDataType;
 
         String pkName = toTitleCase(toModelName(modelName));
@@ -836,8 +836,8 @@ public class KtormSchemaCodegen extends AbstractKotlinCodegen {
             case SqlType.Json:
                 return false;
             default:
-                // If its explicitly configured * and java.* types.
-                if (dataType.startsWith("") || dataType.startsWith("java.")) {
+                // If its explicitly configured kotlin.* and java.* types.
+                if (isPrimitive(dataType)) {
                     // We just have to serialize it.
                     return false;
                 }
